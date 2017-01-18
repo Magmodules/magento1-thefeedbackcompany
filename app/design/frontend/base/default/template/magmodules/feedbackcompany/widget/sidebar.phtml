@@ -1,0 +1,93 @@
+<?php
+/**
+ * Magmodules.eu - http://www.magmodules.eu
+ *
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to info@magmodules.eu so we can send you a copy immediately.
+ *
+ * @category      Magmodules
+ * @package       Magmodules_Feedbackcompany
+ * @author        Magmodules <info@magmodules.eu>
+ * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+ * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+$sidebarreviews = $this->getReviews();
+$total = $this->getTotals();
+$link = $this->getReviewsUrl('sidebar');
+$logo = $this->getSkinUrl('magmodules/feedbackcompany/images/logo.png');
+?>
+<div>
+    <div class="block feedbackcompany-sidebar">
+        <div class="block-title">
+            <strong><span><?php echo $this->__('Feedbackcompany') ?></span></strong>
+        </div>
+        <?php if ($total->getPercentage() > 0): ?>
+            <?php if ($this->getSnippetsEnabled('block')): ?>
+                <div class="block-content" itemscope itemtype="http://schema.org/WebPage">
+                    <div class="total-block-stars">
+                        <span style="width: <?php echo $total->getPercentage(); ?>%"></span>
+                    </div>
+                    <div class="total-block-text" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                        <p>
+                            <strong>
+                                <span itemprop="ratingValue"><?php echo $total->getStarsQty(); ?></span> / <span itemprop="bestRating">10</span>
+                            </strong>
+                        </p>
+                        <p class="based-on">
+                            <?php echo $this->__('Based on %s reviews', '<span itemprop="ratingCount">' . $total->getVotes() . '</span>'); ?>
+                        </p>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="block-content">
+                    <div class="total-block-stars">
+                        <span style="width: <?php echo $total->getPercentage(); ?>%"></span>
+                    </div>
+                    <div class="total-block-text">
+                        <p>
+                            <strong>
+                                <?php echo $total->getStarsQty(); ?> / 10
+                            </strong>
+                        </p>
+                        <p class="based-on">
+                            <?php echo $this->__('Based on %s reviews', '<span>' . $total->getVotes() . '</span>'); ?>
+                        </p>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        <?php $i = 0;
+        foreach ($sidebarreviews as $sidebarreview): ?>
+            <?php $content = $this->formatContent($sidebarreview, 'block'); ?>
+            <div class="block-content">
+                <div class="feedbackcompany-sidebar-block">
+                    <p>
+                        <u><?php echo $sidebarreview->getCustomerName(); ?></u>: "<?php echo $content; ?>"
+                    </p>
+                    <span class="rating-name">
+                        <?php echo Mage::helper('core')->formatDate($sidebarreview->getDateCreated(), 'medium', false); ?>
+                    </span>
+                    <?php if ($sidebarreview->getScore()): ?>
+                        <span class="rating-empty">
+                            <span class="rating-star-<?php echo $sidebarreview->getScore(); ?>"></span>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        <div class="block-content">
+            <?php if ($link) { ?>
+                <a href="<?php echo $link; ?>" target="_blank">
+                    <img src="<?php echo $logo; ?>" class="feedbackcompany-logo"></a>
+            <?php } else { ?>
+                <img src="<?php echo $logo; ?>" class="feedbackcompany-logo">
+            <?php } ?>
+        </div>
+    </div>
+</div>

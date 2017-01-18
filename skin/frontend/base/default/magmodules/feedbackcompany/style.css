@@ -1,0 +1,336 @@
+/*
+ * Magmodules.eu - http://www.magmodules.eu
+ *
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to info@magmodules.eu so we can send you a copy immediately.
+ *
+ * @category      Magmodules
+ * @package       Magmodules_Feedbackcompany
+ * @author        Magmodules <info@magmodules.eu>
+ * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+ * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+.feedbackcompany .page-title .flexbox-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.feedbackcompany .page-title h1 {
+    min-height: 50px;
+}
+
+.feedbackcompany .page-title .flexbox-container h1 {
+    flex-grow: 1;
+    border-bottom: none;
+}
+
+.feedbackcompany .flexbox-container .header-floating-feedbackcompany {
+    flex-shrink: 0;
+}
+
+.feedbackcompany .header-floating-feedbackcompany .button {
+    padding: 0;
+    vertical-align: text-bottom;
+}
+
+.feedbackcompany .header-floating-feedbackcompany .button span {
+    padding: 10px 45px 10px 41px;
+    display: inline-block;
+}
+
+.feedbackcompany .total-feedbackcompany {
+    display: none;
+    margin-right: 14px;
+    text-align: right;
+}
+
+.feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile {
+    display: block;
+    text-align: center;
+    margin: 40px 0 30px;
+}
+
+.feedbackcompany .total-feedbackcompany .total-block-stars, .feedbackcompany .total-feedbackcompany .total-block-stars-medium {
+    float: right;
+    vertical-align: sub;
+}
+
+.feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile .button, .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile .total-block-stars {
+    vertical-align: middle;
+}
+
+.feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile .total-block-stars {
+    float: none;
+    margin-top: -8px;
+    display: inline-block;
+}
+
+.feedbackcompany .total-feedbackcompany .total-description {
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 22px;
+    clear: both;
+}
+
+.feedbackcompany .about-feedbackcompany {
+}
+
+.feedbackcompany .stats-feedbackcompany {
+}
+
+.feedbackcompany .ratingblock-feedbackcompany {
+    width: 60px;
+    height: 60px;
+    padding: 4px 0 0 3px;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 6px auto;
+    border-radius: 70px;
+    border: 4px solid white;
+    box-shadow: 1px 1px 3px #CCCCCC;
+}
+
+.feedbackcompany .content-feedbackcompany {
+    overflow: auto;
+    width: 100%;
+    margin-bottom: 5px;
+    padding-left: 3px;
+    line-height: 1.7;
+}
+
+.feedbackcompany .review-list {
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.feedbackcompany .review-list h4 {
+    font-size: 12px;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 6px 3px 10px;
+}
+
+.feedbackcompany .review-header {
+    clear: both;
+}
+
+.feedbackcompany .review-content {
+    padding: 0 3px;
+    line-height: 2.4;
+}
+
+.feedbackcompany .review-content .experience {
+    margin-bottom: 12px;
+}
+
+.feedbackcompany ul.overall {
+    float: right;
+}
+
+.feedbackcompany dl {
+    padding-left: 21px;
+}
+
+.feedbackcompany dl:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.feedbackcompany dl.summary-index {
+    line-height: 2.8;
+}
+
+.feedbackcompany dl dt {
+    font-weight: bold;
+    clear: left;
+    float: left;
+    width: 40%;
+}
+
+.feedbackcompany dl dd {
+    float: left;
+    width: 60%;
+}
+
+.feedbackcompany .sprites-icon {
+    background: url('images/sprites.png') center top no-repeat;
+    width: 16px;
+    height: 15px;
+    display: inline-block;
+    left: -20px;
+    position: relative;
+    margin-right: -16px;
+    vertical-align: middle;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), not all, not all, not all, (min-resolution: 192dpi), (min-resolution: 2dppx) {
+    .feedbackcompany .sprites-icon {
+        background: url('images/sprites@2x.png') center top no-repeat;
+        background-size: 16px;
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+
+}
+
+.feedbackcompany .sprites-icon.sprites-icon-comment {
+    background-position: 0 0;
+}
+
+.feedbackcompany .sprites-icon.sprites-icon-tick {
+    background-position: 0 -15px;
+}
+
+.feedbackcompany .sprites-icon.sprites-icon-brush {
+    background-position: 0 -30px;
+}
+
+/* THE TRIANGLE
+------------------------------------------------------------------------------------------------------------------------------- */
+
+.company_response {
+    position: relative;
+    padding: 15px;
+    margin: 23px 0 3em;
+    border: 3px solid #C3C3C3;
+    color: #333;
+    background: #FFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    font-style: italic;
+}
+
+.company_response:before {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 40px;
+    border-width: 20px 20px 0;
+    border-style: solid;
+    border-color: #C3C3C3 transparent;
+    display: block;
+    width: 0;
+}
+
+.company_response:after {
+    content: "";
+    position: absolute;
+    bottom: -13px;
+    left: 47px;
+    border-width: 13px 13px 0;
+    border-style: solid;
+    border-color: #FFF transparent;
+    display: block;
+    width: 0;
+}
+
+.company_response.top:before {
+    top: -16px;
+    bottom: auto;
+    left: 23px;
+    right: auto;
+    border-width: 0 16px 16px;
+}
+
+.company_response.top:after {
+    top: -13px;
+    bottom: auto;
+    left: 27px;
+    right: auto;
+    border-width: 0 13px 13px;
+}
+
+@media only screen and (min-width: 600px) {
+    .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile {
+        display: none;
+    }
+
+    .feedbackcompany .total-feedbackcompany {
+        display: inline-block;
+    }
+
+    .feedbackcompany .header-floating-feedbackcompany .button {
+        vertical-align: text-bottom;
+    }
+}
+
+@media only screen and (min-width: 771px) {
+    .feedbackcompany .total-feedbackcompany {
+        line-height: 34px;
+    }
+
+    .feedbackcompany .review-content .experience {
+        margin-bottom: 5px;
+        line-height: 2;
+    }
+
+    .feedbackcompany .header-floating-feedbackcompany {
+        padding: 1px 15px;
+    }
+
+    .feedbackcompany .review-list h4 {
+        padding: 6px 30px 10px;
+    }
+
+    .feedbackcompany .page-title h1 {
+        padding: 0 15px 20px;
+    }
+
+    .feedbackcompany dl {
+        padding-left: 0;
+    }
+
+    .feedbackcompany dl.dl-feedback {
+        margin-bottom: 6px;
+    }
+
+    .feedbackcompany dl.dl-feedback dt {
+        width: 16%;
+    }
+
+    .feedbackcompany dl.dl-feedback .upper {
+        line-height: 2.0;
+        padding-top: 8px;
+    }
+
+    .feedbackcompany dl.dl-feedback dd {
+        width: 84%;
+    }
+
+    .feedbackcompany dl.summary-index dt {
+        width: 32%;
+    }
+
+    .feedbackcompany dl.summary-index dd {
+        width: 68%;
+    }
+
+    .feedbackcompany .summary-index .column {
+        float: left;
+        width: 50%;
+    }
+
+    .feedbackcompany .content-feedbackcompany {
+        padding-left: 15px;
+        line-height: 1.93;
+        margin-bottom: 23px;
+    }
+
+    .feedbackcompany .review-content {
+        padding: 0 30px;
+        line-height: 2.8;
+    }
+
+    .feedbackcompany .sprites-icon {
+        left: -24px;
+    }
+
+}

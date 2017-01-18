@@ -1,0 +1,49 @@
+<?php
+/**
+ * Magmodules.eu - http://www.magmodules.eu
+ *
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to info@magmodules.eu so we can send you a copy immediately.
+ *
+ * @category      Magmodules
+ * @package       Magmodules_Feedbackcompany
+ * @author        Magmodules <info@magmodules.eu>
+ * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+ * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+$total = $this->getTotals();
+$link = $this->getReviewsUrl('small');
+?>
+<div class="feedbackcompany-small-widget">
+    <?php if ($this->getSnippetsEnabled('small')) { ?>
+        <div itemscope itemtype="http://schema.org/WebPage">
+            <div class="feedbackcompany-small-score">
+                <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                    <?php echo $this->getHtmlStars($total->getPercentage(), 'small'); ?>
+                    <p class="feedbackcompany-small-text">
+                        <?php if ($link) { ?>
+                            <?php echo $this->__('Reviews from customers: %s - <a href="%s" target="_blank">%s reviews</a>', '<span itemprop="ratingValue">' . $total->getStarsQty() . '</span> / <span itemprop="bestRating">10</span>', $link, '<span itemprop="ratingCount">' . $total->getVotes() . '</span>'); ?>
+                        <?php } else { ?>
+                            <?php echo $this->__('Reviews from customers: %s - %s reviews', '<span itemprop="ratingValue">' . $total->getStarsQty() . '</span> / <span itemprop="bestRating">10</span>', '<span itemprop="ratingCount">' . $total->getVotes() . '</span>'); ?>
+                        <?php } ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+    <?php } else { ?>
+        <?php echo $this->getHtmlStars($total->getPercentage(), 'small'); ?>
+        <p class="feedbackcompany-small-text">
+            <?php if ($link) { ?>
+                <?php echo $this->__('Reviews from customers: %s - <a href="%s" target="_blank">%s reviews</a>', $total->getStarsQty() . ' / 10', $link, $total->getVotes()); ?>
+            <?php } else { ?>
+                <?php echo $this->__('Reviews from customers: %s - %s reviews', $total->getStarsQty() . ' / 10', $total->getVotes()); ?>
+            <?php } ?>
+        </p>
+    <?php } ?>
+</div>

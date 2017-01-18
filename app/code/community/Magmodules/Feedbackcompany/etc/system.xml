@@ -1,0 +1,1063 @@
+<?xml version="1.0"?>
+<!--
+  ~ Magmodules.eu - http://www.magmodules.eu
+  ~
+  ~ NOTICE OF LICENSE
+  ~ This source file is subject to the Open Software License (OSL 3.0)
+  ~ that is bundled with this package in the file LICENSE.txt.
+  ~ It is also available through the world-wide-web at this URL:
+  ~ http://opensource.org/licenses/osl-3.0.php
+  ~ If you did not receive a copy of the license and are unable to
+  ~ obtain it through the world-wide-web, please send an email
+  ~ to info@magmodules.eu so we can send you a copy immediately.
+  ~
+  ~ @category      Magmodules
+  ~ @package       Magmodules_Feedbackcompany
+  ~ @author        Magmodules <info@magmodules.eu>
+  ~ @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+  ~ @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+  -->
+<config>
+    <tabs>
+        <magmodules translate="label" module="feedbackcompany">
+            <label>Magmodules</label>
+            <sort_order>200</sort_order>
+        </magmodules>
+    </tabs>
+    <sections>
+        <feedbackcompany translate="label" module="feedbackcompany">
+            <label>The Feedback Company</label>
+            <tab>magmodules</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>120</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <info>
+                    <frontend_model>feedbackcompany/adminhtml_widget_info_info</frontend_model>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </info>
+                <general translate="label" module="feedbackcompany">
+                    <label>General configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment>
+                        <![CDATA[You can find the necessary information in your The Feedback Company dashboard.<br/> As addition next to the activation of this extension we also recommend you to place the appropriate The Feedback Company logo.<br/><br/>]]></comment>
+                    <fields>
+                        <version translate="label">
+                            <label>Extension Version</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>feedbackcompany/adminhtml_widget_field_version</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </version>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <heading_api translate="label">
+                            <label>API CREDENTIALS</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_api>
+                        <company translate="label">
+                            <label>Company</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </company>
+                        <api_id translate="label">
+                            <label>The Feedback Company ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <tooltip>You can find this information in your The Feedback Company account</tooltip>
+                        </api_id>
+                    </fields>
+                </general>
+                <reviews translate="label" module="feedbackcompany">
+                    <label>The Feedbackcompany Shop Reviews</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment>
+                        <![CDATA[
+							<script>
+								Event.observe(window, 'load', function() {
+									if ($('feedbackcompany_reviews_lastrun')) {
+										$('feedbackcompany_reviews_lastrun').style.backgroundColor='#f0f0f0';
+										$('feedbackcompany_reviews_lastrun').disable();
+									}
+								});
+							</script>
+						]]>
+                    </comment>
+                    <fields>
+                        <cron translate="label">
+                            <label>Use Cronjob</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <tooltip>Use the Magento Cronjob to use the automatically import. A cronjob is a daemon
+                                which keeps running and gets activated at a said interval (time period). Please make
+                                sure your default Magento Cron is working. If not, contact your hosting company for
+                                help.
+                            </tooltip>
+                        </cron>
+                        <cron_stats translate="label">
+                            <label>Update Summary</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_cronfrequency</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <cron>1</cron>
+                            </depends>
+                            <tooltip>Select the schedule for automatic updating</tooltip>
+                        </cron_stats>
+                        <cron_reviews translate="label">
+                            <label>Update Reviews</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_cronfrequency</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <cron>1</cron>
+                            </depends>
+                            <tooltip>Select the schedule for automatic updating</tooltip>
+                        </cron_reviews>
+                        <cron_all translate="label">
+                            <label>Update Review History</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_cronfrequencylong</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <cron>1</cron>
+                            </depends>
+                            <tooltip>Select the schedule for automatic updating</tooltip>
+                        </cron_all>
+                        <flushcache translate="label">
+                            <label>Flush Block Cache after import</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <tooltip>If set to yes, the cms block cache will be flushed after the import of Reviews,
+                                Review History and after editing a review from the admin
+                            </tooltip>
+                        </flushcache>
+                        <lastrun translate="label">
+                            <label>Last Update</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </lastrun>
+                        <process translate="label">
+                            <label>Process Manually</label>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>feedbackcompany/adminhtml_widget_buttons_process</frontend_model>
+                            <sort_order>101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </process>
+                    </fields>
+                </reviews>
+                <sidebar translate="label">
+                    <label>The Feedbackcompany Reviews Sidebar</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment>
+                        <![CDATA[Show the latest reviews directly in the right or left area of your store to gain trust and directly show your client reviews.<br/><br/>]]></comment>
+                    <fields>
+                        <left_heading translate="label">
+                            <label>Left Sidebar</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </left_heading>
+                        <left translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </left>
+                        <left_qty translate="label">
+                            <label>Number of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <left>1</left>
+                            </depends>
+                        </left_qty>
+                        <left_lenght translate="label">
+                            <label>Length of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <left>1</left>
+                            </depends>
+                        </left_lenght>
+                        <left_snippets translate="label">
+                            <label>Add Rich Snippets</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <left>1</left>
+                            </depends>
+                        </left_snippets>
+                        <left_link translate="label">
+                            <label>Link to</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_sidebarlink</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <left>1</left>
+                            </depends>
+                        </left_link>
+                        <right_heading translate="label">
+                            <label>Right Sidebar</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </right_heading>
+                        <right translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </right>
+                        <right_qty translate="label">
+                            <label>Number of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <right>1</right>
+                            </depends>
+                        </right_qty>
+                        <right_lenght translate="label">
+                            <label>Length of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <right>1</right>
+                            </depends>
+                        </right_lenght>
+                        <right_link>
+                            <label>Link to</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_sidebarlink</source_model>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <right>1</right>
+                            </depends>
+                        </right_link>
+                        <right_snippets translate="label">
+                            <label>Add Rich Snippets</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>66</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <right>1</right>
+                            </depends>
+                        </right_snippets>
+                    </fields>
+                </sidebar>
+                <block translate="label">
+                    <label>The Feedbackcompany Blocks</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <sidebar_heading translate="label">
+                            <label>Sidebar Style Block</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sidebar_heading>
+                        <sidebar_note translate="label">
+                            <label>
+                                <![CDATA[You can add this custom block by pasting the following code into your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="sidebar"}}]]></label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sidebar_note>
+                        <sidebar translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sidebar>
+                        <sidebar_qty translate="label">
+                            <label>Number of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sidebar>1</sidebar>
+                            </depends>
+                        </sidebar_qty>
+                        <sidebar_lenght translate="label">
+                            <label>Length of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sidebar>1</sidebar>
+                            </depends>
+                        </sidebar_lenght>
+                        <sidebar_link translate="label">
+                            <label>Link to</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_sidebarlink</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sidebar>1</sidebar>
+                            </depends>
+                        </sidebar_link>
+                        <sidebar_snippets translate="label">
+                            <label>Add Rich Snippets</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <sidebar>1</sidebar>
+                            </depends>
+                        </sidebar_snippets>
+                        <small_heading translate="label">
+                            <label>Small Block</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </small_heading>
+                        <small_note translate="label">
+                            <label>
+                                <![CDATA[You can add this custom block by pasting the following code in your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="small"}}]]></label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </small_note>
+                        <small translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </small>
+                        <small_stars translate="label">
+                            <label>Show stars</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <small>1</small>
+                            </depends>
+                        </small_stars>
+                        <small_link translate="label">
+                            <label>Link to</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_sidebarlink</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <small>1</small>
+                            </depends>
+                        </small_link>
+                        <small_snippets translate="label">
+                            <label>Add Rich Snippets</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <small>1</small>
+                            </depends>
+                        </small_snippets>
+                        <medium_heading translate="label">
+                            <label>Medium Block</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </medium_heading>
+                        <medium_note translate="label">
+                            <label>
+                                <![CDATA[You can add this custom block by pasting the following code in your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="medium"}}]]></label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </medium_note>
+                        <medium translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </medium>
+                        <medium_stars translate="label">
+                            <label>Show stars</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>43</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <medium>1</medium>
+                            </depends>
+                        </medium_stars>
+                        <medium_link translate="label">
+                            <label>Link to</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_sidebarlink</source_model>
+                            <sort_order>44</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <medium>1</medium>
+                            </depends>
+                        </medium_link>
+                        <medium_review translate="label">
+                            <label>Add latest review</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <medium>1</medium>
+                            </depends>
+                        </medium_review>
+                        <medium_lenght translate="label">
+                            <label>Length of Reviews</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>46</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <medium>1</medium>
+                            </depends>
+                        </medium_lenght>
+                        <medium_snippets translate="label">
+                            <label>Add Rich Snippets</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>47</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <medium>1</medium>
+                            </depends>
+                        </medium_snippets>
+                        <header_heading translate="label">
+                            <label>Header Block</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </header_heading>
+                        <header_note translate="label">
+                            <label>
+                                <![CDATA[The documentation to implement The Feedback Company header widget can be found <a href="http://www.magmodules.eu/help/feedbackcompany/the-feedback-company-header-widget/">here</a>.]]></label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </header_note>
+                        <header translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </header>
+                        <header_link translate="label">
+                            <label>Link to</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_sidebarlink</source_model>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <header>1</header>
+                            </depends>
+                        </header_link>
+                        <header_snippets translate="label">
+                            <label>Add Rich Snippets</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <header>1</header>
+                            </depends>
+                        </header_snippets>
+                    </fields>
+                </block>
+                <overview translate="label">
+                    <label>Feedbackcompany Overview Page</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment>
+                        <![CDATA[You can import your customer reviews and display them in your store as new content.<br>Link: http://www.mywebshop.com/<strong>feedbackcompany</strong><br><br>]]></comment>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <intro translate="lable">
+                            <label>Intro</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </intro>
+                        <enable_paging>
+                            <label>Paging</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_paging>
+                        <paging_settings>
+                            <label>Reviews per page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <tooltip>Comma Separated, as: 10,20,30</tooltip>
+                            <depends>
+                                <enable_paging>1</enable_paging>
+                            </depends>
+                        </paging_settings>
+                        <heading_meta translate="label">
+                            <label>Meta Data</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_meta>
+                        <meta_title translate="lable">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </meta_title>
+                        <meta_description translate="lable">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </meta_description>
+                        <meta_keywords translate="label">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </meta_keywords>
+                    </fields>
+                </overview>
+                <invitation translate="label">
+                    <label>The Feedback Company Invitation Email</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>7</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment><![CDATA[You can invite your customers to write customer reviews.]]></comment>
+                    <fields>
+                        <heading_setup translate="label">
+                            <label>Invitation Emails</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_setup>
+                        <enabled translate="label">
+                            <label>Activate</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Send invitation?</comment>
+                            <tooltip>Send customers automatically receive an invitation to share a customer
+                                experience.
+                            </tooltip>
+                        </enabled>
+                        <connector>
+                            <label>Connector Code</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Can be obtained from the Feedbackcompany Dashboard</comment>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </connector>
+                        <status>
+                            <label>Order completed with status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_orderstatus</source_model>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                            <comment>Invitation e-mail is sent after such status is achieved</comment>
+                            <tooltip>Specify at which status you want to send the invitation. Default is "Completed"
+                            </tooltip>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </status>
+                        <delay translate="label">
+                            <label>Delay</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Send the invitation x days after the order is completed</comment>
+                            <tooltip>This will ensure that the customer receives the invitation shortly after receiving
+                                the product and not before. This increases the opportunity that the client will share
+                                his experience.
+                            </tooltip>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </delay>
+                        <remind_delay translate="label">
+                            <label>Remind Delay</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Send the invitation reminder x days after the previous reminder. 0 = none</comment>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </remind_delay>
+                        <backlog translate="label">
+                            <label>Maximum Delay</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>16</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Change only if necessary</comment>
+                            <tooltip>Number of days to complete order may last, if it takes longer then no invitation
+                                will be sent. Read more about this feature on Feedbackcompany.nl.
+                            </tooltip>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </backlog>
+                        <resend translate="label">
+                            <label>Resend if Double</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>17</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                            <comment>If yes, customers will get new review reminders for every new order.</comment>
+                        </resend>
+                        <heading_filter translate="label">
+                            <label>Filter options</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_filter>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Invitation e-mail is sent only for order above this value. Use 0 for no minimum.]]></comment>
+                        </min_order_total>
+                        <exclude_category translate="label">
+                            <label>Exclude by Category</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </exclude_category>
+                        <exclude_categories>
+                            <label>Exclude following Categories</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_category</source_model>
+                            <sort_order>43</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <exclude_category>1</exclude_category>
+                            </depends>
+                            <comment>
+                                <![CDATA[The invitation e-mail will not be sent whenever there is ordered a product from one of the selected categories.]]></comment>
+                        </exclude_categories>
+                    </fields>
+                </invitation>
+                <productreviews translate="label">
+                    <label>The Feedbackcompany Productreviews</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                        <![CDATA[
+							<script>
+								Event.observe(window, 'load', function() {
+									if ($('feedbackcompany_productreviews_lastrun')) {
+										$('feedbackcompany_productreviews_lastrun').style.backgroundColor='#f0f0f0';
+										$('feedbackcompany_productreviews_lastrun').disable();
+									}
+								});
+							</script>
+						]]>
+                    </comment>
+                    <expanded>1</expanded>
+                    <fields>
+                        <products_note translate="label">
+                            <label>
+                                <![CDATA[This option is still in beta, contact The Feedback Company for more information.<br/>]]></label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </products_note>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <client_id translate="label">
+                            <label>Oauth2 Client ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </client_id>
+                        <client_secret translate="label">
+                            <label>Oauth2 Client Secret</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </client_secret>
+                        <heading_reviews translate="label">
+                            <label>Review Settings</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </heading_reviews>
+                        <review_import_status translate="label">
+                            <label>Default Review Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_reviewstatus</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </review_import_status>
+                        <review_import_rating translate="label">
+                            <label>Default Review Rating</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_reviewrating</source_model>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </review_import_rating>
+                        <heading_import translate="label">
+                            <label>Import Settings</label>
+                            <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </heading_import>
+                        <cron translate="label">
+                            <label>Use Cronjob</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cron>
+                        <cron_productreviews translate="label">
+                            <label>Update Reviews</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>feedbackcompany/system_config_source_cronfrequency</source_model>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <tooltip>Select the schedule for automatic updating</tooltip>
+                        </cron_productreviews>
+                        <lastrun translate="label">
+                            <label>Last Update</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>33</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </lastrun>
+                        <process translate="label">
+                            <label>Process Manually</label>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>feedbackcompany/adminhtml_widget_buttons_productreviews</frontend_model>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </process>
+                    </fields>
+                </productreviews>
+                <log translate="label">
+                    <label>The Feedbackcompany Log Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>9</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <expanded>1</expanded>
+                    <comment>
+                        <![CDATA[Logs can be activated in order to detect errors.<br/> This feature is particularly for developers.<br/><br/>]]></comment>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enable Log Function</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <clean translate="label">
+                            <label>Auto Cleaning</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </clean>
+                        <clean_days translate="label">
+                            <label>Clean after Days</label>
+                            <validate>validate-number</validate>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <depends>
+                                <enabled>1</enabled>
+                            </depends>
+                        </clean_days>
+                    </fields>
+                </log>
+            </groups>
+        </feedbackcompany>
+    </sections>
+</config>

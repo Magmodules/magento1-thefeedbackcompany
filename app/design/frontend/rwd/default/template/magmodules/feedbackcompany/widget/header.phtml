@@ -1,0 +1,40 @@
+<?php
+/**
+ * Magmodules.eu - http://www.magmodules.eu
+ *
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to info@magmodules.eu so we can send you a copy immediately.
+ *
+ * @category      Magmodules
+ * @package       Magmodules_Feedbackcompany
+ * @author        Magmodules <info@magmodules.eu>
+ * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+ * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+$stats = $this->getTotals();
+$link = $this->getReviewsUrl();
+?>
+<div id="feedbackcompany-header-widget" class="feedbackcompany-header-widget-searchbar skip-content">
+    <?php if ($this->getSnippetsEnabled()): ?>
+        <div itemscope itemtype="http://schema.org/WebPage">
+            <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                <?php if ($link) echo '<a href="' . $link . '" target="_blank">'; ?>
+                <?php echo $this->__('%s/%s with %s reviews', '<span itemprop="ratingValue">' . $stats->getScore() . '</span>', '<span itemprop="bestRating">' . $stats->getScoremax() . '</span>', '<span itemprop="ratingCount">' . $stats->getVotes() . '</span>'); ?>
+                <div class="total-block-stars-small"><span
+                            style="width: <?php echo $stats->getPercentage(); ?>%"></span></div>
+                <?php if ($link) echo '</a>'; ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <?php if ($link) echo '<a href="' . $link . '" target="_blank">'; ?>
+        <?php echo $this->__('%s/%s with %s reviews', $stats->getScore(), $stats->getScoremax(), $stats->getVotes()); ?>
+        <div class="total-block-stars-small"><span style="width: <?php echo $stats->getPercentage(); ?>%"></span></div>
+        <?php if ($link) echo '</a>'; ?>
+    <?php endif; ?>
+</div>

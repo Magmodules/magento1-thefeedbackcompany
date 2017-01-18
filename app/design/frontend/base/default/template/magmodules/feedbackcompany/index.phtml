@@ -1,0 +1,168 @@
+<?php
+/**
+ * Magmodules.eu - http://www.magmodules.eu
+ *
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to info@magmodules.eu so we can send you a copy immediately.
+ *
+ * @category      Magmodules
+ * @package       Magmodules_Feedbackcompany
+ * @author        Magmodules <info@magmodules.eu>
+ * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+ * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+$reviews = $this->getReviews();
+$stats = $this->getStats();
+?>
+<div class="feedbackcompany" itemscope itemtype="http://schema.org/Organization">
+    <div class="page-title">
+        <div class="flexbox-container">
+            <h1><?php echo $this->__('The Feedback Company'); ?></h1>
+            <div class="header-floating-feedbackcompany">
+                <!-- Desktop only -->
+                <div class="total-feedbackcompany" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                    <?php if ($stats->getVotes()): ?>
+                        <div class="total-block-stars-medium">
+                            <span style="width: <?php echo $stats->getScore(); ?>%;"></span>
+                        </div>
+                        <div class="total-description">
+                            <?php echo $this->__('%s/%s with %s reviews',
+                                '<span itemprop="ratingValue">' . $stats->getScore() . '</span>',
+                                '<span itemprop="bestRating">100</span>',
+                                '<span itemprop="ratingCount">' . $stats->getVotes() . '</span>'); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <!-- END Desktop only -->
+                <?php if ($review_url = $this->getReviewUrl()): ?>
+                    <button class="button" onclick="setLocation('<?php echo $review_url; ?>')">
+						<span>
+							<?php echo $this->__('Write review'); ?>
+						</span>
+                    </button>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile only -->
+    <div class="total-feedbackcompany total-feedbackcompany-mobile">
+        <?php if ($stats->getVotes()): ?>
+            <?php echo $this->__('%s/%s with %s reviews', '<span>' . $stats->getScore() . '</span>', '<span>100</span>',
+                '<span>' . $stats->getVotes() . '</span>'); ?>
+            <div class="total-block-stars"><span style="width: <?php echo $stats->getScore(); ?>%"></span></div>
+        <?php endif; ?>
+    </div>
+    <!-- END Mobile only -->
+
+    <?php if ($reviews->getSize()): ?>
+        <div class="content-feedbackcompany">
+            <div class="about-feedbackcompany">
+                <?php echo $this->getPageIntro(); ?>
+            </div>
+        </div>
+        <?php foreach ($reviews as $review): ?>
+            <div class="review-list" itemprop="review" itemscope itemtype="http://schema.org/Review">
+                <div class="review-header">
+                    <?php if ($review->getScore()): ?>
+                        <ul class="overall">
+                            <li>
+                                <div class="total-block-stars-small" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                                    <span style="width: <?php echo $review->getScore() * 20; ?>%"></span>
+                                    <meta itemprop="worstRating" content="1"/>
+                                    <meta itemprop="ratingValue" content="<?php echo $review->getScore(); ?>"/>
+                                    <meta itemprop="bestRating" content="5"/>
+                                </div>
+                            </li>
+                        </ul>
+                    <?php endif; ?>
+                    <h4>
+                        <span itemprop="author"><?php echo($review->getCustomerName() ?: $this->__('Anonymous')); ?></span>
+                        -
+                        <meta itemprop="datePublished" content="<?php echo $review->getDateCreated(); ?>"><?php echo Mage::helper('core')->formatDate($review->getDateCreated(), 'long', false); ?>
+                    </h4>
+                </div>
+                <div class="review-content">
+                    <div class="experience">
+                        <?php if ($review->getReviewText()): ?>
+                            <span itemprop="description">
+                                <?php echo nl2br($review->getReviewText()); ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if ($response = $review->getCompanyResponse()): ?>
+                            <div class="company_response top">
+                                <?php echo $response; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <dl class="dl-feedback">
+                        <?php if ($text_comment = $review->getTextComment()): ?>
+                            <dt class="upper">
+                                <span class="sprites-icon sprites-icon-comment"></span>
+                                <?php echo $this->__('Store Comment'); ?>
+                            </dt>
+                            <dd class="upper"><?php echo ucfirst($text_comment); ?></dd>
+                        <?php endif; ?>
+
+                        <?php if ($text_positive = $review->getTextPositive()): ?>
+                            <dt class="upper">
+                                <span class="sprites-icon sprites-icon-tick"></span>
+                                <?php echo $this->__('Positive'); ?>
+                            </dt>
+                            <dd class="upper"><?php echo ucfirst($text_positive); ?></dd>
+                        <?php endif; ?>
+
+                        <?php if ($text_improvements = $review->getTextImprovements()): ?>
+                            <dt class="upper">
+                                <span class="sprites-icon sprites-icon-brush"></span>
+                                <?php echo $this->__('Improvements'); ?>
+                            </dt>
+                            <dd class="upper"><?php echo ucfirst($text_improvements); ?></dd>
+                        <?php endif; ?>
+
+                        <?php if ($sex = $review->getCustomerSex()): ?>
+                            <dt><?php echo $this->__('Gender'); ?></dt>
+                            <dd><?php echo ucfirst($sex); ?></dd>
+                        <?php endif; ?>
+
+                        <?php if ($customer_recommend = $review->getCustomerRecommend()): ?>
+                            <dt><?php echo $this->__('Recommend'); ?></dt>
+                            <dd><?php echo ucfirst($customer_recommend); ?></dd>
+                        <?php endif; ?>
+                    </dl>
+                    <dl class="summary-index">
+                        <div class="column">
+                            <?php
+                                $scores = $this->formatScoresReview($review);
+                                $half = ceil(count($scores) / 2);
+                                $i = 0;
+                            ?>
+                            <?php foreach ($scores as $title => $percentage): ?>
+                                <dt><?php echo $this->__($title); ?></dt>
+                                <dd>
+                                    <div class="total-block-stars-grey">
+                                        <span style="width: <?php echo $percentage; ?>%"></span>
+                                    </div>
+                                </dd>
+                                <?php if (++$i == $half) {
+                                    echo '</div><div class="column">';
+                                } ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        <?php echo $this->getPagerHtml(); ?>
+    <?php else: ?>
+        <p class="note-msg">
+            <?php echo $this->__('No reviews found...'); ?>
+        </p>
+    <?php endif ?>
+</div>

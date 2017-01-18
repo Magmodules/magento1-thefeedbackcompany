@@ -1,0 +1,338 @@
+/*
+ * Magmodules.eu - http://www.magmodules.eu
+ *
+ * NOTICE OF LICENSE
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to info@magmodules.eu so we can send you a copy immediately.
+ *
+ * @category      Magmodules
+ * @package       Magmodules_Feedbackcompany
+ * @author        Magmodules <info@magmodules.eu>
+ * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
+ * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+.feedbackcompany-sidebar-block {
+    padding: 10px;
+}
+
+.feedbackcompany-sidebar-block .rating-name {
+    font-style: italic;
+}
+
+.feedbackcompany-logo {
+    width: 100px;
+    margin: auto;
+}
+
+.feedbackcompany-medium-image {
+    width: 125px;
+    padding: 7px;
+}
+
+/** Discrete stars **/
+.feedbackcompany-sidebar-block .rating-empty {
+    float: right;
+    display: block;
+    width: 80px;
+    height: 16px;
+    background: url('./images/star.png') 0 -16px;
+    margin-right: 5px;
+}
+
+.feedbackcompany-sidebar-block .rating-star-1 {
+    float: left;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url('./images/star.png') 0 0;
+    margin-right: 5px;
+}
+
+.feedbackcompany-sidebar-block .rating-star-2 {
+    float: left;
+    display: block;
+    width: 32px;
+    height: 16px;
+    background: url('./images/star.png') 0 0;
+    margin-right: 5px;
+}
+
+.feedbackcompany-sidebar-block .rating-star-3 {
+    float: left;
+    display: block;
+    width: 48px;
+    height: 16px;
+    background: url('./images/star.png') 0 0;
+    margin-right: 5px;
+}
+
+.feedbackcompany-sidebar-block .rating-star-4 {
+    float: left;
+    display: block;
+    width: 64px;
+    height: 16px;
+    background: url('./images/star.png') 0 0;
+    margin-right: 5px;
+}
+
+.feedbackcompany-sidebar-block .rating-star-5 {
+    float: left;
+    display: block;
+    width: 80px;
+    height: 16px;
+    background: url('./images/star.png') 0 0;
+    margin-right: 5px;
+}
+
+/** Continuous stars **/
+
+.feedbackcompany-small-widget .rating-box {
+    height: 21px;
+    background: url('./images/stars-colorful-small-empty.png') no-repeat !important;
+    margin: 5px 0 0;
+    width: 75px;
+}
+
+.feedbackcompany-small-widget .rating {
+    display: block;
+    height: 21px;
+    background: url('./images/stars-colorful-small-filling.png') no-repeat !important;
+}
+
+.feedbackcompany-small-widget .feedbackcompany-small-text {
+    padding: 5px 0 0 0;
+}
+
+.feedbackcompany-medium-widget .rating-box {
+    height: 21px;
+    background: url('./images/stars-colorful-big-empty.png') no-repeat;
+    margin: 10px 0 5px;
+    width: 110px;
+}
+
+.feedbackcompany-medium-widget .rating {
+    display: block;
+    height: 21px;
+    background: url('./images/stars-colorful-big-filling.png') no-repeat !important;
+}
+
+.feedbackcompany-medium-widget .feedbackcompany-small-text {
+    padding: 4px 0 0 0;
+}
+
+.feedbackcompany-small-score .rating-box {
+    height: 21px;
+    background: url('./images/stars-colorful-big-empty.png') no-repeat;
+    margin: 5px 15px;
+    width: 109px;
+    float: left;
+}
+
+.feedbackcompany-small-score .rating {
+    display: block;
+    height: 21px;
+    background: url('./images/stars-colorful-big-filling.png') no-repeat;
+}
+
+.feedbackcompany-small-score .feedbackcompany-small-text {
+    padding: 4px 0 0 0;
+}
+
+/** big colorful review stars **/
+.block-content p.company-name {
+    text-align: center;
+    margin: 5px auto;
+    font-size: 12px;
+}
+
+.total-block-text {
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 5px;
+}
+
+.total-block-text p {
+    text-align: center;
+    padding-top: 5px;
+    margin-bottom: 2px;
+    font-size: 18px;
+}
+
+.total-block-text p.based-on {
+    text-align: center;
+    padding-top: 0;
+    font-size: 11px;
+    font-style: italic;
+}
+
+.total-block-stars {
+    height: 21px;
+    width: 110px;
+    background: url('./images/stars-colorful-big-empty.png') no-repeat;
+    margin: 5px auto;
+}
+
+.total-block-stars span {
+    display: block;
+    height: 21px;
+    background: url('./images/stars-colorful-big-filling.png') no-repeat;
+}
+
+/** medium colorful review stars **/
+.total-block-stars-medium {
+    height: 20px;
+    width: 108px;
+    background: url('./images/stars-colorful-medium-empty.png') no-repeat;
+}
+
+.total-block-stars-medium span {
+    display: block;
+    height: 20px;
+    background: url('./images/stars-colorful-medium-filling.png') no-repeat;
+}
+
+/** small colorful review stars **/
+.total-block-stars-small {
+    height: 14px;
+    width: 74px;
+    background: url('./images/stars-colorful-small-empty.png') no-repeat;
+    margin: 5px auto;
+}
+
+.total-block-stars-small span {
+    display: block;
+    height: 14px;
+    background: url('./images/stars-colorful-small-filling.png') no-repeat;
+}
+
+/** small grayscale review stars **/
+.total-block-stars-grey {
+    height: 14px;
+    width: 74px;
+    background: url('./images/stars-grayscale-small-empty.png') no-repeat;
+    display: inline-block
+}
+
+.total-block-stars-grey span {
+    display: block;
+    height: 14px;
+    background: url('./images/stars-grayscale-small-filling.png') no-repeat;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), not all, not all, not all, (min-resolution: 192dpi), (min-resolution: 2dppx) {
+    /** big colorful review stars **/
+    .total-block-stars {
+        background: url('./images/stars-colorful-big-empty@2x.png') no-repeat;
+        background-size: 110px 21px;
+    }
+
+    .total-block-stars span {
+        background: url('./images/stars-colorful-big-filling@2x.png') no-repeat;
+        background-size: 110px 21px;
+    }
+
+    /** medium colorful review stars **/
+    .total-block-stars-small {
+        background: url('./images/stars-colorful-medium-empty@2x.png') no-repeat;
+        background-size: 108px 20px;
+    }
+
+    .total-block-stars-small span {
+        background: url('./images/stars-colorful-medium-filling@2x.png') no-repeat;
+        background-size: 108px 20px;
+    }
+
+    /** small colorful review stars **/
+    .total-block-stars-small {
+        background: url('./images/stars-colorful-small-empty@2x.png') no-repeat;
+        background-size: 74px 14px;
+    }
+
+    .total-block-stars-small span {
+        background: url('./images/stars-colorful-small-filling@2x.png') no-repeat;
+        background-size: 74px 14px;
+    }
+
+    /** small grayscale review stars **/
+    .total-block-stars-grey {
+        background: url('./images/stars-grayscale-small-empty@2x.png') no-repeat;
+        background-size: 74px 14px;
+    }
+
+    .total-block-stars-grey span {
+        background: url('./images/stars-grayscale-small-filling@2x.png') no-repeat;
+        background-size: 74px 14px;
+    }
+}
+
+/* CUSTOM BLOCK */
+.feedbackcompany-custom {
+    font-weight: bold;
+    font-size: 13px;
+    display: block;
+    border: .25em solid #EEE;
+    background: #F6F6F6;
+    padding: 1.0em;
+    width: 30%;
+    text-align: center;
+}
+
+.feedbackcompany-custom .client {
+    font-size: 16px;
+}
+
+.feedbackcompany-custom .rating-box {
+    margin-left: 40%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.feedbackcompany-custom .number {
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 300;
+}
+
+#feedbackcompany-header-widget {
+    font-size: 12px;
+    border-radius: 2px;
+    border: 1px solid silver;
+    padding: 10px 15px 10px 10px;
+    line-height: 18px;
+}
+
+#feedbackcompany-header-widget.feedbackcompany-header-widget-searchbar {
+    position: absolute;
+    top: 55px;
+    right: 25%;
+    margin-right: 18px;
+}
+
+#feedbackcompany-header-widget .total-block-stars-small {
+    display: inline-block;
+    vertical-align: middle;
+    margin: -1px 10px 0 8px;
+}
+
+.feedbackcompany-logo {
+    padding: 10px 0;
+}
+
+@media (min-width: 961px) {
+    #feedbackcompany-header-widget {
+        display: inline-block;
+    }
+
+    #feedbackcompany-header-widget > * {
+        display: inline-block;
+    }
+
+    #feedbackcompany-header-widget a:hover {
+        text-decoration: none;
+    }
+}
