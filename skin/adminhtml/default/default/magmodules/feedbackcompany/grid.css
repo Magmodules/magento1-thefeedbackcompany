@@ -60,9 +60,10 @@ a.magtooltip span {
 }
 
 a.magtooltip:hover span {
-    display: inline;
+    display: block;
     position: absolute;
     background: #ffffff;
+    width: 265px;
     border: 1px solid #cccccc;
     color: #000;
     padding: 10px;

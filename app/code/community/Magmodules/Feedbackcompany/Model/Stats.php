@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,98 +17,161 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Magmodules_Feedbackcompany_Model_Stats extends Mage_Core_Model_Abstract
+
+class Magmodules_Feedbackcompany_Model_Stats extends Magmodules_Feedbackcompany_Model_Api
 {
 
+    const FBC_REVIEW_SUMMARY_URL = 'https://beoordelingen.feedbackcompany.nl/api/v1/review/summary';
+
+    /**
+     *
+     */
     public function _construct()
     {
         parent::_construct();
         $this->_init('feedbackcompany/stats');
     }
 
-    public function processFeed($feed, $storeId = 0)
+    /**
+     * @param $storeId
+     *
+     * @return array
+     */
+    public function runUpdate($storeId)
     {
-        $result = array();
-        $shopId = Mage::getStoreConfig('feedbackcompany/general/api_id', $storeId);
-        $company = Mage::getStoreConfig('feedbackcompany/general/company', $storeId);
+        $feed = $this->getFeed($storeId);
 
-        if (!empty($feed->detailslink)) {
-            if ($storeId == 0) {
-                $config = Mage::getModel('core/config');
-                $config->saveConfig('feedbackcompany/general/url', $feed->detailslink, 'default', $storeId);
-            } else {
-                $config = Mage::getModel('core/config');
-                $config->saveConfig('feedbackcompany/general/url', $feed->detailslink, 'stores', $storeId);
-                if (!Mage::getStoreConfig('feedbackcompany/general/url', 0)) {
-                    $config->saveConfig('feedbackcompany/general/url', $feed->detailslink, 'default', 0);
-                }
+        if ($feed['status'] != 'OK') {
+            return $feed;
+        }
+
+        $id = $this->getShopIdByFeedbackId($feed['feed']['shop']['id']);
+        $this->saveSummary(
+            array(
+                'id'         => $id,
+                'company'    => $feed['feed']['shop']['webshop_name'],
+                'shop_id'    => $feed['feed']['shop']['id'],
+                'score'      => ($feed['feed']['review_summary']['merchant_score'] * 10),
+                'scoremax'   => ($feed['feed']['review_summary']['max_score'] * 10),
+                'votes'      => $feed['feed']['review_summary']['total_reviews'],
+                'review_url' => $feed['feed']['shop']['review_url'],
+                'recommends' => $feed['feed']['review_summary']['total_recommends'],
+                'client_id'  => $this->getClientId($storeId)
+            )
+        );
+
+        return array(
+            'status'  => 'OK',
+            'company' => $feed['feed']['shop']['webshop_name']
+        );
+    }
+
+    /**
+     * @param $storeId
+     *
+     * @return array
+     */
+    public function getFeed($storeId)
+    {
+        $apiResult = $this->makeRequest(self:: FBC_REVIEW_SUMMARY_URL, $storeId);
+
+        if ($apiResult) {
+            if (!empty($apiResult['message']) && $apiResult['message'] == 'OK') {
+                return array(
+                    'status' => 'OK',
+                    'feed'   => $apiResult['data'][0]
+                );
             }
-
-            if ($feed->noReviews > 0) {
-                $id = $this->loadbyShopId($shopId)->getId();
-                $score = floatval($feed->score);
-                $score = ($score * 10);
-                $scoremax = ($feed->scoremax * 10);
-                $votes = $feed->noReviews;
-
-                $this->setId($id)
-                    ->setShopId($shopId)
-                    ->setCompany($company)
-                    ->setScore($score)
-                    ->setScoremax($scoremax)
-                    ->setVotes($votes)
-                    ->save();
-
-                $result['status'] = 'success';
-                $result['company'] = $company;
-                $result['score'] = $score;
-            }
+            return array(
+                'status' => 'ERROR',
+                'error'  => isset($apiResult['error']) ? $apiResult['error'] : ''
+            );
         } else {
-            $result['status'] = 'error';
-            $result['msg'] = Mage::helper('core/string')->truncate(strip_tags($feed), '500');
+            return array(
+                'status' => 'ERROR',
+                'error'  => Mage::helper('feedbackcompany')->__('Error connect to the API.'),
+            );
         }
-
-        return $result;
     }
 
-    public function loadbyShopId($shopId)
+    /**
+     * @param $feedbackId
+     *
+     * @return mixed
+     */
+    public function getShopIdByFeedbackId($feedbackId)
     {
-        $this->_getResource()->load($this, $shopId, 'shop_id');
-        return $this;
+        $id = $this->getCollection()
+            ->addFieldToFilter('shop_id', $feedbackId)
+            ->addFieldToSelect('id')
+            ->getFirstItem()
+            ->getId();
+
+        return $id;
     }
 
-    public function processOverall()
+    /**
+     * @param $data
+     */
+    public function saveSummary($data)
     {
-        $stats = Mage::getModel('feedbackcompany/stats')->getCollection();
-        $stats->addFieldToFilter('shop_id', array('neq' => '0'));
-        $id = $this->loadbyShopId(0)->getId();
+        Mage::getModel('feedbackcompany/stats')->setData($data)->save();
+    }
 
-        $score = '';
-        $scoremax = '';
-        $votes = '';
-        $i = 0;
-
-        foreach ($stats as $stat) {
-            $score += $stat->getScore();
-            $scoremax += $stat->getScoremax();
-            $votes += $stat->getVotes();
-            $i++;
+    /**
+     * @param $storeId
+     *
+     * @return mixed
+     */
+    public function getShopIdByStoreId($storeId = null)
+    {
+        if (empty($storeId)) {
+            $storeId = Mage::app()->getStore()->getStoreId();
         }
 
-        if ($i > 0) {
-            $score = ($score / $i);
-            $scoremax = ($scoremax / $i);
-            $company = 'Overall';
+        if($stats = $this->loadByStoreId($storeId)) {
+            return $stats->getShopId();
         }
 
-        Mage::getModel('feedbackcompany/stats')
-            ->setId($id)
-            ->setShopId(0)
-            ->setCompany($company)
-            ->setScore($score)
-            ->setScoremax($scoremax)
-            ->setVotes($votes)
-            ->save();
+        return false;
+    }
+
+    /**
+     * @param $storeId
+     *
+     * @return mixed
+     */
+    public function loadByStoreId($storeId)
+    {
+        $clientId = Mage::getStoreConfig('feedbackcompany/general/client_id', $storeId);
+        $stats = $this->getCollection()->addFieldToFilter('client_id', $clientId)->getFirstItem();
+
+        if ($stats->getScore() > 0) {
+            $stats->setPercentage($stats->getScore());
+            $stats->setStarsQty(number_format(($stats->getScore() / 10), 1, ',', ''));
+            return $stats;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param null $storeId
+     *
+     * @return mixed
+     */
+    public function getFeedbackUrl($storeId = null)
+    {
+        if (empty($storeId)) {
+            $storeId = Mage::app()->getStore()->getStoreId();
+        }
+
+        $clientId = Mage::getStoreConfig('feedbackcompany/general/client_id', $storeId);
+        $stats = $this->getCollection()->addFieldToFilter('client_id', $clientId)->getFirstItem();
+
+        if($stats) {
+            return $stats->getReviewUrl();
+        }
     }
 
 }

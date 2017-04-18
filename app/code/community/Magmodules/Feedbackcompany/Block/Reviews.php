@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,27 +17,9 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Block_Reviews extends Mage_Core_Block_Template
 {
-
-    /**
-     * Magmodules_Feedbackcompany_Block_Reviews constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $shopId = Mage::getStoreConfig('feedbackcompany/general/api_id');
-
-        $collection = Mage::getModel('feedbackcompany/reviews')->getCollection();
-        $collection->setOrder('date_created', 'DESC');
-        $collection->addFieldToFilter('status', 1);
-        $collection->addFieldToFilter('shop_id', $shopId);
-        $this->setReviews($collection);
-
-        $stats = Mage::getModel('feedbackcompany/stats')->load($shopId, 'shop_id');
-        $this->setStats($stats);
-    }
 
     /**
      * @return $this
@@ -63,6 +44,24 @@ class Magmodules_Feedbackcompany_Block_Reviews extends Mage_Core_Block_Template
         $this->getReviews()->load();
 
         return $this;
+    }
+
+    /**
+     * Magmodules_Feedbackcompany_Block_Reviews constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $shopId = Mage::getModel("feedbackcompany/stats")->getShopIdByStoreId();
+        $collection = Mage::getModel('feedbackcompany/reviews')->getCollection();
+        $collection->setOrder('date_created', 'DESC');
+        $collection->addFieldToFilter('status', 1);
+        $collection->addFieldToFilter('shop_id', $shopId);
+        $this->setReviews($collection);
+
+        $stats = Mage::getModel('feedbackcompany/stats')->load($shopId, 'shop_id');
+        $this->setStats($stats);
     }
 
     /**

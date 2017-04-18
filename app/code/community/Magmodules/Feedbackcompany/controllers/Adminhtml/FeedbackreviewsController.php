@@ -21,11 +21,17 @@
 class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mage_Adminhtml_Controller_Action
 {
 
+    /**
+     *
+     */
     public function indexAction()
     {
         $this->_initAction()->renderLayout();
     }
 
+    /**
+     * @return $this
+     */
     protected function _initAction()
     {
         $this->loadLayout()
@@ -39,43 +45,82 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
     }
 
     /**
-     *
+     * Process action, manual import/update all reviews & stats.
      */
     public function processAction()
     {
-        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
         $startTime = microtime(true);
-        foreach ($storeIds as $storeId) {
+        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
+        foreach ($storeIds as $clientId => $storeId) {
             $msg = '';
-            $apiId = Mage::getStoreConfig('feedbackcompany/general/api_id', $storeId);
-            $result = Mage::getModel('feedbackcompany/api')->processFeed($storeId, 'all');
-            $time = (microtime(true) - $startTime);
-
-            Mage::getModel('feedbackcompany/log')->addToLog('reviews', $storeId, $result, '', $time, '', '');
-
-            $status = $result['stats']['status'];
-            if (($result['review_new'] > 0) || ($result['review_updates'] > 0) || ($status == 'success')) {
-                $msg = Mage::helper('feedbackcompany')->__('Webwinkel ID %s:', $apiId) . ' ';
-                $msg .= Mage::helper('feedbackcompany')->__('%s new review(s)', $result['review_new']) . ', ';
-                $msg .= Mage::helper('feedbackcompany')->__('%s review(s) updated', $result['review_updates']) . ' & ';
-                $msg .= Mage::helper('feedbackcompany')->__('and total score updated.');
+            $reviews = Mage::getModel('feedbackcompany/reviews')->runUpdate($storeId, 'full');
+            $stats = Mage::getModel('feedbackcompany/stats')->runUpdate($storeId);
+            if (($reviews['new'] > 0) || ($reviews['update'] > 0) || ($reviews['status'] == 'success')) {
+                $msg = $this->__('%s:', $reviews['company']) . ' ';
+                $msg .= $this->__('%s new review(s)', $reviews['new']) . ', ';
+                $msg .= $this->__('%s review(s) updated', $reviews['update']) . ' ';
+                if ($stats['status'] == 'OK') {
+                    $msg .= $this->__('and total score updated.');
+                }
             }
 
+            Mage::getModel('feedbackcompany/log')->addToLog('reviews', $storeId, $reviews, '', $startTime, '', '');
             if ($msg) {
                 Mage::getSingleton('adminhtml/session')->addSuccess($msg);
             } else {
-                if (!empty($result['stats']['msg'])) {
-                    $msg = Mage::helper('feedbackcompany')->__('Webwinkel ID %s: %s', $apiId, $result['stats']['msg']);
+                if (!empty($reviews['msg'])) {
+                    $msg = $this->__('ClientId %s: %s', $clientId, $reviews['msg']);
+                    Mage::getSingleton('adminhtml/session')->addError($msg);
+                } elseif (!empty($stats['msg'])) {
+                    $msg = $this->__('ClientId %s: %s', $clientId, $stats['msg']);
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                 } else {
-                    $msg = $this->__('Webwinkel ID %s: no updates found, feed is empty or not found!', $apiId);
+                    $msg = $this->__('ClientId %s: no updates found, feed is empty or not found!', $clientId);
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                 }
             }
         }
 
-        Mage::getModel('feedbackcompany/stats')->processOverall();
-        Mage::getModel('feedbackcompany/reviews')->flushCache();
+        $this->_redirect('adminhtml/system_config/edit/section/feedbackcompany');
+    }
+
+    /**
+     *
+     */
+    public function productreviewsAction()
+    {
+        $errors = array();
+        $qty = 0;
+        $startTime = microtime(true);
+        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
+        foreach ($storeIds as $clientId => $storeId) {
+            $reviews = Mage::getModel('feedbackcompany/productreviews')->runUpdate($storeId, 'full');
+            if (isset($reviews['new']) && $reviews['new'] > 0) {
+                $qty += $reviews['new'];
+                $log = Mage::getModel('feedbackcompany/log');
+                $log->addToLog('productreviews', $storeId, $reviews, '', $startTime, '');
+            } else {
+                if (isset($reviews['error'])) {
+                    $errors[$clientId] = $reviews['error'];
+                }
+            }
+        }
+
+        if (!empty($errors)) {
+            foreach ($errors as $key => $value) {
+                $msg = $this->__('API Response for client ID: %s => %s', $key, $value);
+                Mage::getSingleton('adminhtml/session')->addError($msg);
+            }
+        } else {
+            if ($qty > 0) {
+                $msg = $this->__('Imported %d new productreview(s).', $qty);
+                Mage::getSingleton('adminhtml/session')->addSuccess($msg);
+            } else {
+                $msg = $this->__('No new reviews found.', $qty);
+                Mage::getSingleton('adminhtml/session')->addSuccess($msg);
+            }
+        }
+
         $this->_redirect('adminhtml/system_config/edit/section/feedbackcompany');
     }
 
@@ -209,50 +254,6 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
     /**
      *
      */
-    public function productreviewsAction()
-    {
-        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds('oauth');
-        $startTime = microtime(true);
-        $qty = 0;
-        $errors = array();
-        foreach ($storeIds as $storeId) {
-            $enabled = Mage::getStoreConfig('feedbackcompany/general/enabled', $storeId);
-            $reviewsEnabled = Mage::getStoreConfig('feedbackcompany/productreviews/enabled', $storeId);
-            $clientId = Mage::getStoreConfig('feedbackcompany/productreviews/client_id', $storeId);
-            $clientSecret = Mage::getStoreConfig('feedbackcompany/productreviews/client_secret', $storeId);
-            if ($enabled && $reviewsEnabled && !empty($clientId) && !empty($clientSecret)) {
-                $feed = Mage::getModel('feedbackcompany/api')->getFeed($storeId, 'productreviews', 'last_month');
-                if ($feed['status'] == 'OK') {
-                    $results = Mage::getModel('feedbackcompany/productreviews')->processFeed($feed, $storeId);
-                    if ($results['review_new'] > 0) {
-                        $qty = ($qty + $results['review_new']);
-                        $log = Mage::getModel('feedbackcompany/log');
-                        $log->addToLog('productreviews', $storeId, $results, '', (microtime(true) - $startTime), '');
-                    }
-                } else {
-                    $errors[$clientId] = $feed['error'];
-                }
-            }
-        }
-
-        if (count($errors) > 0) {
-            foreach ($errors as $key => $value) {
-                $msg = $this->__('API Response for client ID: %s => %s', $key, $value);
-                Mage::getSingleton('adminhtml/session')->addError($msg);
-            }
-        } else {
-            if ($qty > 0) {
-                $msg = $this->__('Imported %d new productreview(s).', $qty);
-                Mage::getSingleton('adminhtml/session')->addSuccess($msg);
-            } else {
-                $msg = $this->__('No new reviews found.', $qty);
-                Mage::getSingleton('adminhtml/session')->addSuccess($msg);
-            }
-        }
-
-        $this->_redirect('adminhtml/system_config/edit/section/feedbackcompany');
-    }
-
     public function exportCsvAction()
     {
         $reviews = $this->getRequest()->getPost('reviews', array());

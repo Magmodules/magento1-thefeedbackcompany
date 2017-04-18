@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Model_System_Config_Source_Cronfrequencylong
 {
 
@@ -27,7 +27,7 @@ class Magmodules_Feedbackcompany_Model_System_Config_Source_Cronfrequencylong
     public function toOptionArray()
     {
         return array(
-            '' => Mage::helper('feedbackcompany')->__('Never'),
+            ''          => Mage::helper('feedbackcompany')->__('Never'),
             '0 2 * * *' => Mage::helper('feedbackcompany')->__('Once a Day'),
             '0 2 * * 0' => Mage::helper('feedbackcompany')->__('Once a Week'),
             '0 2 1 * *' => Mage::helper('feedbackcompany')->__('Once a Month'),

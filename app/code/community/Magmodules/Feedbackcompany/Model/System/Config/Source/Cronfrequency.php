@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Model_System_Config_Source_Cronfrequency
 {
 
@@ -27,13 +27,13 @@ class Magmodules_Feedbackcompany_Model_System_Config_Source_Cronfrequency
     public function toOptionArray()
     {
         return array(
-            '' => Mage::helper('feedbackcompany')->__('Never'),
-            '0 * * * *' => Mage::helper('feedbackcompany')->__('Every Hour'),
-            '0 */2 * * *' => Mage::helper('feedbackcompany')->__('Every other Hour'),
+            ''             => Mage::helper('feedbackcompany')->__('Never'),
+            '0 * * * *'    => Mage::helper('feedbackcompany')->__('Every Hour'),
+            '0 */2 * * *'  => Mage::helper('feedbackcompany')->__('Every other Hour'),
             '0 8,20 * * *' => Mage::helper('feedbackcompany')->__('Twice a Day'),
-            '0 2 * * *' => Mage::helper('feedbackcompany')->__('Once a Day'),
-            '0 2 * * 0' => Mage::helper('feedbackcompany')->__('Once a Week'),
-            '0 2 1 * *' => Mage::helper('feedbackcompany')->__('Once a Month'),
+            '0 2 * * *'    => Mage::helper('feedbackcompany')->__('Once a Day'),
+            '0 2 * * 0'    => Mage::helper('feedbackcompany')->__('Once a Week'),
+            '0 2 1 * *'    => Mage::helper('feedbackcompany')->__('Once a Month'),
         );
     }
 

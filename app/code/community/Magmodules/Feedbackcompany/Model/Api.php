@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,160 +17,86 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
 {
 
-    /**
-     * @param int $storeId
-     * @param $type
-     * @return bool
-     */
-    public function processFeed($storeId = 0, $type)
-    {
-        if ($feed = $this->getFeed($storeId, $type)) {
-            $results = Mage::getModel('feedbackcompany/reviews')->processFeed($feed, $type, $storeId);
-            $results['stats'] = Mage::getModel('feedbackcompany/stats')->processFeed($feed, $storeId);
-
-            return $results;
-        }
-
-        return false;
-    }
-
+    const XML_CLIENT_ID = 'feedbackcompany/general/client_id';
+    const XML_CLIENT_SECRET = 'feedbackcompany/general/client_secret';
+    const FBC_OAUTH2_TOKEN_URL = 'https://beoordelingen.feedbackcompany.nl/api/v1/oauth2/token';
+    const FBC_FEEDBACK_URL = 'https://connect.feedbackcompany.nl/feedback/';
 
     /**
      * @param $storeId
-     * @param string $type
-     * @param string $interval
-     * @return bool|SimpleXMLElement|array
+     *
+     * @return mixed
      */
-    public function getFeed($storeId, $type = '', $interval = '')
+    public function getClientId($storeId)
     {
-        if ($type == 'productreviews') {
-            $result = array();
-            $clientToken = Mage::helper('feedbackcompany')->getUncachedConfigValue(
-                'feedbackcompany/productreviews/client_token',
-                $storeId
-            );
-            if (!$clientToken) {
-                $clientToken = $this->getOauthToken($storeId);
-                if ($clientToken['status'] == 'ERROR') {
-                    return $clientToken;
-                } else {
-                    $clientToken = $clientToken['client_token'];
-                }
-            }
-
-            $apiUrl = 'https://beoordelingen.feedbackcompany.nl/api/v1/review/getrecent/';
-
-            $request = curl_init();
-            curl_setopt($request, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($request, CURLOPT_URL, $apiUrl . '?interval=' . $interval . '&type=product&unixts=1');
-            curl_setopt($request, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $clientToken));
-            curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-            $apiResult = json_decode($content = curl_exec($request));
-
-            if ($apiResult) {
-                if (isset($apiResult->message)) {
-                    if ($apiResult->message == 'OK') {
-                        $result['status'] = 'OK';
-                        $result['feed'] = $apiResult->data[0];
-
-                        return $result;
-                    }
-                }
-
-                $config = Mage::getModel('core/config');
-                $config->saveConfig('feedbackcompany/productreviews/client_token', '', 'stores', $storeId);
-                $result['status'] = 'ERROR';
-                $result['error'] = $apiResult->error;
-
-                return $result;
-            } else {
-                $result['status'] = 'ERROR';
-                $result['error'] = Mage::helper('feedbackcompany')->__('Error connect to the API.');
-
-                return $result;
-            }
-        } else {
-            $apiId = trim(Mage::getStoreConfig('feedbackcompany/general/api_id', $storeId));
-            $apiUrl = 'https://beoordelingen.feedbackcompany.nl/samenvoordeel/scripts/flexreview/getreviewxml.cfm';
-
-            if ($type == 'stats') {
-                $apiUrl = $apiUrl . '?ws=' . $apiId . '&publishDetails=0&nor=0&Basescore=10';
-            }
-
-            if (($type == 'reviews') || ($type == 'history')) {
-                $apiUrl = $apiUrl . '?ws=' . $apiId;
-                $apiUrl .= '&publishIDs=1&nor=100&publishDetails=1&publishOnHold=0&sort=desc&emlpass=test';
-                $apiUrl .= '&publishCompResponse=1&Basescore=10';
-            }
-
-            if ($type == 'all') {
-                $apiUrl = $apiUrl . '?ws=' . $apiId;
-                $apiUrl .= '&publishIDs=1&nor=10000&publishDetails=1&publishOnHold=0&sort=desc&emlpass=test';
-                $apiUrl .= '&publishCompResponse=1&Basescore=10';
-            }
-
-            if ($apiId) {
-                $xml = @simplexml_load_file($apiUrl);
-                if ($xml) {
-                    return $xml;
-                }
-            }
-        }
-
-        return false;
+        return Mage::getStoreConfig(self::XML_CLIENT_ID, $storeId);
     }
 
+    /**
+     * @param $url
+     * @param $storeId
+     *
+     * @return array|bool|mixed
+     */
+    public function makeRequest($url, $storeId)
+    {
+        $clientToken = $this->getOauthToken($storeId);
+        if ($clientToken['status'] == 'ERROR') {
+            return $clientToken;
+        } else {
+            $clientToken = $clientToken['client_token'];
+        }
+
+        $request = curl_init();
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($request, CURLOPT_URL, $url);
+        curl_setopt($request, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $clientToken));
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_TIMEOUT, 30);
+        $apiResult = json_decode($content = curl_exec($request), true);
+
+        return $apiResult;
+    }
+
+    /**
+     * @param $storeId
+     *
+     * @return array|bool
+     */
     public function getOauthToken($storeId)
     {
-        $clientId = Mage::getStoreConfig('feedbackcompany/productreviews/client_id', $storeId);
-        $clientSecret = Mage::getStoreConfig('feedbackcompany/productreviews/client_secret', $storeId);
+        $clientId = Mage::getStoreConfig(self::XML_CLIENT_ID, $storeId);
+        $clientSecret = Mage::getStoreConfig(self::XML_CLIENT_SECRET, $storeId);
 
         if (!empty($clientId) && !empty($clientSecret)) {
-            $url = "https://beoordelingen.feedbackcompany.nl/api/v1/oauth2/token";
-
             $getArray = array(
-                "client_id" => $clientId,
+                "client_id"     => $clientId,
                 "client_secret" => $clientSecret,
-                "grant_type" => "authorization_code"
+                "grant_type"    => "authorization_code"
             );
 
-            $feedbackconnect = curl_init($url . '?' . http_build_query($getArray));
-
+            $feedbackconnect = curl_init(self::FBC_OAUTH2_TOKEN_URL . '?' . http_build_query($getArray));
             curl_setopt($feedbackconnect, CURLOPT_VERBOSE, 1);
             curl_setopt($feedbackconnect, CURLOPT_FAILONERROR, false);
             curl_setopt($feedbackconnect, CURLOPT_HEADER, 0);
             curl_setopt($feedbackconnect, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($feedbackconnect, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($feedbackconnect, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($feedbackconnect, CURLOPT_TIMEOUT, 30);
             $response = json_decode(curl_exec($feedbackconnect));
             curl_close($feedbackconnect);
 
-
             if (isset($response->access_token)) {
-                $storeIds = Mage::getModel('feedbackcompany/productreviews')->getAllStoreViews($storeId);
-                $config = Mage::getModel('core/config');
-                foreach ($storeIds as $storeId) {
-                    $config->saveConfig(
-                        'feedbackcompany/productreviews/client_token', $response->access_token,
-                        'stores', $storeId
-                    );
-                }
-
-                $result = array();
-                $result['status'] = 'OK';
-                $result['client_token'] = $response->access_token;
-
-                return $result;
+                return array('status' => 'OK', 'client_token' => $response->access_token);
             } else {
-                if ($response->description) {
-                    $result = array();
-                    $result['status'] = 'ERROR';
-                    $result['error'] = $response->description;
-
-                    return $result;
+                if (isset($response->description)) {
+                    return array('status' => 'ERROR', 'error' => $response->description);
+                } else {
+                    return array('status' => 'ERROR', 'error' => 'No response from API');
                 }
             }
         }
@@ -181,6 +106,7 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
 
     /**
      * @param $order
+     *
      * @return bool
      */
     public function sendInvitation($order)
@@ -302,8 +228,7 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
                 if ($excludeReason) {
                     $reason = implode(',', array_unique($excludeReason));
                     $reason = 'Not invited: ' . $reason;
-                    $time = (microtime(true) - $startTime);
-                    $log->addToLog('invitation', $storeId, '', $reason, $time, $crontype, '', $order->getId());
+                    $log->addToLog('invitation', $storeId, '', $reason, $startTime, $crontype, '', $order->getId());
                 } else {
                     return false;
                 }
@@ -326,14 +251,15 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
                 $post = trim($post, '&');
 
                 // Connect to API
-                $url = 'https://connect.feedbackcompany.nl/feedback/';
-                $feedbackconnect = curl_init($url . '?' . $post);
+                $url = self::FBC_FEEDBACK_URL . '?' . $post;
+                $feedbackconnect = curl_init($url);
                 curl_setopt($feedbackconnect, CURLOPT_VERBOSE, 1);
                 curl_setopt($feedbackconnect, CURLOPT_FAILONERROR, false);
                 curl_setopt($feedbackconnect, CURLOPT_HEADER, 0);
                 curl_setopt($feedbackconnect, CURLOPT_FOLLOWLOCATION, 1);
                 curl_setopt($feedbackconnect, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($feedbackconnect, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($feedbackconnect, CURLOPT_TIMEOUT, 60);
                 $response = curl_exec($feedbackconnect);
                 curl_close($feedbackconnect);
 
@@ -349,8 +275,10 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
                 }
 
                 // Write to log
-                $time = (microtime(true) - $startTime);
-                $log->addToLog('invitation', $order->getStoreId(), '', $responseHtml, $time, $crontype, $url . '?' . $post, $order->getId());
+                $log->addToLog(
+                    'invitation', $order->getStoreId(), '', $responseHtml, $startTime, $crontype,
+                    $url, $order->getId()
+                );
 
                 return true;
             }
@@ -360,39 +288,31 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
     }
 
     /**
-     * @param string $type
+     * @param null $type
+     *
      * @return array
      */
-    public function getStoreIds($type = '')
+    public function getStoreIds($type = null)
     {
         $storeIds = array();
         $stores = Mage::getModel('core/store')->getCollection();
-        if ($type == 'oauth') {
-            foreach ($stores as $store) {
-                if ($store->getIsActive()) {
-                    $enabled = Mage::getStoreConfig('feedbackcompany/productreviews/enabled', $store->getId());
-                    $clientId = Mage::getStoreConfig('feedbackcompany/productreviews/client_id', $store->getId());
-                    if ($enabled && $clientId) {
-                        $storeIds[] = $store->getId();
-                    }
+        foreach ($stores as $store) {
+            if ($store->getIsActive()) {
+                if ($type == 'cron') {
+                    $enabled = Mage::helper('feedbackcompany')->isCronEnabled($store->getId());
+                } elseif ($type == 'prcron') {
+                    $enabled = Mage::helper('feedbackcompany')->isPrCronEnabled($store->getId());
+                } else {
+                    $enabled = Mage::helper('feedbackcompany')->isEnabled($store->getId());
+                }
+                $clientId = Mage::getStoreConfig(self::XML_CLIENT_ID, $store->getId());
+                if ($enabled && $clientId) {
+                    $storeIds[$clientId] = $store->getId();
                 }
             }
-
-            return $storeIds;
-        } else {
-            $apiIds = array();
-            foreach ($stores as $store) {
-                if ($store->getIsActive()) {
-                    $apiId = Mage::getStoreConfig('feedbackcompany/general/api_id', $store->getId());
-                    if (!in_array($apiId, $apiIds)) {
-                        $apiIds[] = $apiId;
-                        $storeIds[] = $store->getId();
-                    }
-                }
-            }
-
-            return $storeIds;
         }
+
+        return $storeIds;
     }
 
 }

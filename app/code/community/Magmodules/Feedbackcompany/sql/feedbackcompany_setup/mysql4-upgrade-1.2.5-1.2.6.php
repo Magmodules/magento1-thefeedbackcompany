@@ -20,10 +20,6 @@
 
 $installer = $this;
 $installer->startSetup();
-$installer->run(
-    "
-	ALTER TABLE {$this->getTable('feedbackcompany_reviews')} ADD `company_response` text NULL AFTER `text_improvements`;
-"
-);
+$installer->run("ALTER TABLE {$this->getTable('feedbackcompany_reviews')} ADD `company_response` text NULL AFTER `text_improvements`;");
 
 $installer->endSetup();

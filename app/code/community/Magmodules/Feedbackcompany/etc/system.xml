@@ -78,23 +78,22 @@
                             <show_in_website>0</show_in_website>
                             <show_in_store>1</show_in_store>
                         </heading_api>
-                        <company translate="label">
-                            <label>Company</label>
+                        <client_id translate="label">
+                            <label>Oauth2 Client ID</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
+                            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </company>
-                        <api_id translate="label">
-                            <label>The Feedback Company ID</label>
+                        </client_id>
+                        <client_secret translate="label">
+                            <label>Oauth2 Client Secret</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
+                            <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <tooltip>You can find this information in your The Feedback Company account</tooltip>
-                        </api_id>
+                        </client_secret>
                     </fields>
                 </general>
                 <reviews translate="label" module="feedbackcompany">
@@ -920,6 +919,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enabled>
+                        <!--
                         <client_id translate="label">
                             <label>Oauth2 Client ID</label>
                             <frontend_type>text</frontend_type>
@@ -936,6 +936,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </client_secret>
+                        -->
                         <heading_reviews translate="label">
                             <label>Review Settings</label>
                             <frontend_model>feedbackcompany/adminhtml_widget_form_heading</frontend_model>

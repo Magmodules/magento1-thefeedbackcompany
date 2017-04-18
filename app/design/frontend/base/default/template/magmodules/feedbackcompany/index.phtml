@@ -19,6 +19,7 @@
  */
 $reviews = $this->getReviews();
 $stats = $this->getStats();
+$helper = Mage::helper('feedbackcompany');
 ?>
 <div class="feedbackcompany" itemscope itemtype="http://schema.org/Organization">
     <div class="page-title">
@@ -27,7 +28,7 @@ $stats = $this->getStats();
             <div class="header-floating-feedbackcompany">
                 <!-- Desktop only -->
                 <div class="total-feedbackcompany" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-                    <?php if ($stats->getVotes()): ?>
+                    <?php if ($stats->getVotes()) { ?>
                         <div class="total-block-stars-medium">
                             <span style="width: <?php echo $stats->getScore(); ?>%;"></span>
                         </div>
@@ -37,31 +38,29 @@ $stats = $this->getStats();
                                 '<span itemprop="bestRating">100</span>',
                                 '<span itemprop="ratingCount">' . $stats->getVotes() . '</span>'); ?>
                         </div>
-                    <?php endif; ?>
+                    <?php } ?>
                 </div>
                 <!-- END Desktop only -->
-                <?php if ($review_url = $this->getReviewUrl()): ?>
+                <?php if ($review_url = $this->getReviewUrl()) { ?>
                     <button class="button" onclick="setLocation('<?php echo $review_url; ?>')">
-						<span>
-							<?php echo $this->__('Write review'); ?>
-						</span>
+                        <span><?php echo $this->__('Write review'); ?></span>
                     </button>
-                <?php endif; ?>
+                <?php } ?>
             </div>
         </div>
     </div>
 
     <!-- Mobile only -->
     <div class="total-feedbackcompany total-feedbackcompany-mobile">
-        <?php if ($stats->getVotes()): ?>
+        <?php if ($stats->getVotes()) { ?>
             <?php echo $this->__('%s/%s with %s reviews', '<span>' . $stats->getScore() . '</span>', '<span>100</span>',
                 '<span>' . $stats->getVotes() . '</span>'); ?>
             <div class="total-block-stars"><span style="width: <?php echo $stats->getScore(); ?>%"></span></div>
-        <?php endif; ?>
+        <?php } ?>
     </div>
     <!-- END Mobile only -->
 
-    <?php if ($reviews->getSize()): ?>
+    <?php if ($reviews->getSize()) { ?>
         <div class="content-feedbackcompany">
             <div class="about-feedbackcompany">
                 <?php echo $this->getPageIntro(); ?>
@@ -70,7 +69,7 @@ $stats = $this->getStats();
         <?php foreach ($reviews as $review): ?>
             <div class="review-list" itemprop="review" itemscope itemtype="http://schema.org/Review">
                 <div class="review-header">
-                    <?php if ($review->getScore()): ?>
+                    <?php if ($review->getScore()) { ?>
                         <ul class="overall">
                             <li>
                                 <div class="total-block-stars-small" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
@@ -81,88 +80,78 @@ $stats = $this->getStats();
                                 </div>
                             </li>
                         </ul>
-                    <?php endif; ?>
+                    <?php } ?>
                     <h4>
-                        <span itemprop="author"><?php echo($review->getCustomerName() ?: $this->__('Anonymous')); ?></span>
+                        <span itemprop="author">
+                            <?php echo($review->getCustomerName() ?: $this->__('Anonymous')); ?>
+                        </span>
                         -
-                        <meta itemprop="datePublished" content="<?php echo $review->getDateCreated(); ?>"><?php echo Mage::helper('core')->formatDate($review->getDateCreated(), 'long', false); ?>
+                        <meta itemprop="datePublished" content="<?php echo $review->getDateCreated(); ?>">
+                        <?php echo Mage::helper('core')->formatDate($review->getDateCreated(), 'long', false); ?>
                     </h4>
                 </div>
                 <div class="review-content">
                     <div class="experience">
-                        <?php if ($review->getReviewText()): ?>
+                        <?php if ($review->getReviewText()) { ?>
                             <span itemprop="description">
                                 <?php echo nl2br($review->getReviewText()); ?>
                             </span>
-                        <?php endif; ?>
-                        <?php if ($response = $review->getCompanyResponse()): ?>
+                        <?php } ?>
+                        <?php if ($response = $review->getCompanyResponse()) { ?>
                             <div class="company_response top">
                                 <?php echo $response; ?>
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                     <dl class="dl-feedback">
-                        <?php if ($text_comment = $review->getTextComment()): ?>
-                            <dt class="upper">
-                                <span class="sprites-icon sprites-icon-comment"></span>
-                                <?php echo $this->__('Store Comment'); ?>
-                            </dt>
-                            <dd class="upper"><?php echo ucfirst($text_comment); ?></dd>
-                        <?php endif; ?>
-
-                        <?php if ($text_positive = $review->getTextPositive()): ?>
-                            <dt class="upper">
-                                <span class="sprites-icon sprites-icon-tick"></span>
-                                <?php echo $this->__('Positive'); ?>
-                            </dt>
-                            <dd class="upper"><?php echo ucfirst($text_positive); ?></dd>
-                        <?php endif; ?>
-
-                        <?php if ($text_improvements = $review->getTextImprovements()): ?>
-                            <dt class="upper">
-                                <span class="sprites-icon sprites-icon-brush"></span>
-                                <?php echo $this->__('Improvements'); ?>
-                            </dt>
-                            <dd class="upper"><?php echo ucfirst($text_improvements); ?></dd>
-                        <?php endif; ?>
-
-                        <?php if ($sex = $review->getCustomerSex()): ?>
+                        <?php if ($buyOnline = $review->getBuyOnline()) { ?>
+                            <dt><?php echo $this->__('Buy Online'); ?></dt>
+                            <dd><?php echo ucfirst($buyOnline); ?></dd>
+                        <?php } ?>
+                        <?php if ($sex = $review->getCustomerSex()) { ?>
                             <dt><?php echo $this->__('Gender'); ?></dt>
                             <dd><?php echo ucfirst($sex); ?></dd>
-                        <?php endif; ?>
-
-                        <?php if ($customer_recommend = $review->getCustomerRecommend()): ?>
+                        <?php } ?>
+                        <?php if ($city = $review->getCustomerCiy()) { ?>
+                            <dt><?php echo $this->__('City'); ?></dt>
+                            <dd><?php echo ucfirst($city); ?></dd>
+                        <?php } ?>
+                        <?php if ($country = $review->getCustomerCountry()) { ?>
+                            <dt><?php echo $this->__('Country'); ?></dt>
+                            <dd><?php echo ucfirst($country); ?></dd>
+                        <?php } ?>
+                        <?php if ($customer_recommend = $helper->getCustomerRecommend($review->getCustomerRecommend())) { ?>
                             <dt><?php echo $this->__('Recommend'); ?></dt>
                             <dd><?php echo ucfirst($customer_recommend); ?></dd>
-                        <?php endif; ?>
+                        <?php } ?>
                     </dl>
                     <dl class="summary-index">
                         <div class="column">
                             <?php
-                                $scores = $this->formatScoresReview($review);
-                                $half = ceil(count($scores) / 2);
-                                $i = 0;
+                            $questions = $helper->getQuestions($review->getQuestions(), true, 'score');
+                            $half = ceil(count($questions) / 2);
+                            $i = 0;
                             ?>
-                            <?php foreach ($scores as $title => $percentage): ?>
-                                <dt><?php echo $this->__($title); ?></dt>
+                            <?php foreach ($questions as $question) { ?>
+                                <dt><?php echo $question['Reviewtitle'] ?></dt>
                                 <dd>
                                     <div class="total-block-stars-grey">
-                                        <span style="width: <?php echo $percentage; ?>%"></span>
+                                        <span style="width: <?php echo($question['value'] * 20); ?>%"></span>
                                     </div>
                                 </dd>
                                 <?php if (++$i == $half) {
                                     echo '</div><div class="column">';
                                 } ?>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </div>
                     </dl>
                 </div>
             </div>
         <?php endforeach; ?>
         <?php echo $this->getPagerHtml(); ?>
-    <?php else: ?>
+    <?php } else { ?>
         <p class="note-msg">
             <?php echo $this->__('No reviews found...'); ?>
         </p>
-    <?php endif ?>
+    <?php } ?>
 </div>

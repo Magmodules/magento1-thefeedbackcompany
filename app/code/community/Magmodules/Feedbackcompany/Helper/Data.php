@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,26 +17,93 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Helper_Data extends Mage_Core_Helper_Abstract
 {
+
+    const XML_CLIENT_ID = 'feedbackcompany/general/client_id';
+    const XML_MODULE_ENABLED = 'feedbackcompany/general/enabled';
+    const XML_REVIEWS_CRON = 'feedbackcompany/reviews/cron';
+    const XML_PRODUCT_REVIEWS_CRON = 'feedbackcompany/productreviews/cron';
+    const XML_PRODUCT_REVIEWS_ENABLED = 'feedbackcompany/productreviews/enabled';
+
+    /**
+     * @param $storeId
+     *
+     * @return mixed
+     */
+    public function isEnabled($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_MODULE_ENABLED, $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     *
+     * @return mixed
+     */
+    public function isPrEnabled($storeId = null)
+    {
+        return Mage::getStoreConfig(self::XML_PRODUCT_REVIEWS_ENABLED, $storeId);
+    }
+
+    /**
+     * @param $storeId
+     *
+     * @return bool
+     */
+    public function isCronEnabled($storeId)
+    {
+        $enabled = $this->isEnabled($storeId);
+        $cron = Mage::getStoreConfig(self::XML_REVIEWS_CRON, $storeId);
+
+        if ($enabled && $cron) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $storeId
+     *
+     * @return bool
+     */
+    public function isPrCronEnabled($storeId)
+    {
+        $enabled = $this->isEnabled($storeId);
+        $prEnabled = $this->isPrEnabled($storeId);
+        $cron = Mage::getStoreConfig(self::XML_PRODUCT_REVIEWS_CRON, $storeId);
+
+        if ($enabled && $cron && $prEnabled) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param     $path
+     * @param     $value
+     * @param int $storeId
+     */
+    public function saveConfigValue($path, $value, $storeId = 0)
+    {
+        $config = Mage::getModel('core/config');
+        if ($storeId == 0) {
+            $config->saveConfig($path, $value, 'default', 0);
+        } else {
+            $config->saveConfig($path, $value, 'stores', $storeId);
+        }
+    }
 
     /**
      * @return mixed
      */
     public function getTotalScore()
     {
-        if (Mage::getStoreConfig('feedbackcompany/general/enabled')) {
-            $shopId = Mage::getStoreConfig('feedbackcompany/general/api_id');
-            $reviewStats = Mage::getModel('feedbackcompany/stats')->load($shopId, 'shop_id');
-            if ($reviewStats->getScore() > 0) {
-                $reviewStats->setPercentage($reviewStats->getScore());
-                $reviewStats->setStarsQty(number_format(($reviewStats->getScore() / 10), 1, ',', ''));
-
-                return $reviewStats;
-            }
-        }
-
-        return false;
+        $storeId = Mage::app()->getStore()->getStoreId();
+        return Mage::getModel("feedbackcompany/stats")->loadByStoreId($storeId);
     }
 
     /**
@@ -127,16 +193,18 @@ class Magmodules_Feedbackcompany_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         if ($enabled) {
-            $shopId = Mage::getStoreConfig('feedbackcompany/general/api_id');
-            $reviews = Mage::getModel("feedbackcompany/reviews")->getCollection();
-            $reviews->setOrder('date_created', 'DESC');
-            $reviews->addFieldToFilter('status', 1);
-            $reviews->addFieldToFilter('sidebar', 1);
-            $reviews->addFieldToFilter('shop_id', array('eq' => array($shopId)));
-            $reviews->setPageSize($qty);
-            $reviews->load();
+            $shopId = Mage::getModel("feedbackcompany/stats")->getShopIdByStoreId();
+            if($shopId) {
+                $collection = Mage::getModel("feedbackcompany/reviews")->getCollection()
+                    ->setOrder('date_created', 'DESC')
+                    ->addFieldToFilter('status', 1)
+                    ->addFieldToFilter('sidebar', 1)
+                    ->addFieldToFilter('shop_id', array('eq' => array($shopId)))
+                    ->setPageSize($qty)
+                    ->load();
 
-            return $reviews;
+                return $collection;
+            }
         }
 
         return false;
@@ -148,15 +216,16 @@ class Magmodules_Feedbackcompany_Helper_Data extends Mage_Core_Helper_Abstract
     public function getLatestReview()
     {
         if (Mage::getStoreConfig('feedbackcompany/block/medium_review')) {
-            $shopId = Mage::getStoreConfig('feedbackcompany/general/api_id');
-            $review = Mage::getModel("feedbackcompany/reviews")->getCollection();
-            $review->setOrder('date_created', 'DESC');
-            $review->addFieldToFilter('status', 1);
-            $review->addFieldToFilter('review_text', array('notnull' => true));
-            $review->addFieldToFilter('shop_id', array('eq' => array($shopId)));
-            $review->setPageSize(1);
-
-            return $review->getFirstItem();
+            $shopId = Mage::getModel("feedbackcompany/stats")->getShopIdByStoreId();
+            if($shopId) {
+                $review = Mage::getModel("feedbackcompany/reviews")->getCollection();
+                $review->setOrder('date_created', 'DESC');
+                $review->addFieldToFilter('status', 1);
+                $review->addFieldToFilter('review_text', array('notnull' => true));
+                $review->addFieldToFilter('shop_id', array('eq' => array($shopId)));
+                $review->setPageSize(1);
+                return $review->getFirstItem();
+            }
         }
 
         return false;
@@ -233,7 +302,7 @@ class Magmodules_Feedbackcompany_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         if ($link == 'external') {
-            return Mage::getStoreConfig('feedbackcompany/general/url');
+            return Mage::getModel("feedbackcompany/stats")->getFeedbackUrl();
         }
 
         return false;
@@ -305,48 +374,58 @@ class Magmodules_Feedbackcompany_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $review
+     * @param      $data
+     * @param null $excludeReview
+     * @param null $include
      *
      * @return array
      */
-    public function formatScoresReview($review)
+    public function getQuestions($data, $excludeReview = null, $include = null)
     {
-        $scoreValues = array();
-        $scoreValuesPossible = array(
-            'aftersales' => 'Aftersales',
-            'checkout' => 'Checkout',
-            'information' => 'Information',
-            'friendly' => 'Friendlyness',
-            'leadtime' => 'Leadtime',
-            'responsetime' => 'Responsetime',
-            'order' => 'Orderprocess'
-        );
-
-        foreach ($scoreValuesPossible as $key => $value) {
-            if ($review->getData("score_" . $key) > 0) {
-                $scoreValues[$value] = $review->getData("score_" . $key) * 20;
+        $data = json_decode($data, true);
+        $questions = array();
+        foreach ($data as $row) {
+            if (!empty($include)) {
+                if ($row['type'] != $include) {
+                    continue;
+                }
             }
+
+            $row['value_html'] = $row['value'];
+            if ($row['type'] == 'score' || $row['type'] == 'final_score') {
+                if ($row['value'] < 1) {
+                    continue;
+                }
+
+                $row['value_html'] = round($row['value']) . '/5';
+            }
+
+            if ($row['type'] == 'main_open' && $excludeReview) {
+                continue;
+            }
+
+            $questions[$row['orderNr']] = $row;
         }
 
-        return $scoreValues;
+        return $questions;
     }
 
     /**
-     * @param     $path
-     * @param int $storeId
+     * @param $data
      *
-     * @return mixed
+     * @return bool|string
      */
-    public function getUncachedConfigValue($path, $storeId = 0)
+    public function getCustomerRecommend($data)
     {
-        $collection = Mage::getModel('core/config_data')->getCollection()->addFieldToFilter('path', $path);
-        if ($storeId == 0) {
-            $collection = $collection->addFieldToFilter('scope_id', 0)->addFieldToFilter('scope', 'default');
-        } else {
-            $collection = $collection->addFieldToFilter('scope_id', $storeId)->addFieldToFilter('scope', 'stores');
+        if ($data == 1) {
+            return $this->__('Yes');
         }
 
-        return $collection->getFirstItem()->getValue();
+        if ($data == 0) {
+            return $this->__('No');
+        }
+
+        return false;
     }
 
 }

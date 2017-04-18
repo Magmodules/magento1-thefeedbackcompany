@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,8 +17,70 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Block_Custom extends Mage_Core_Block_Template
 {
+
+    /**
+     *
+     */
+    protected function _construct()
+    {
+        parent::_construct();
+
+        $blockType = $this->getData("blocktype");
+        $blockTypeTemplate = '';
+        $total = $this->helper('feedbackcompany')->getTotalScore();
+
+        if ($blockType == 'sidebar') {
+            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('sidebar');
+            $sidebarreviews = $this->helper('feedbackcompany')->getSidebarCollection('sidebar');
+            if ($total && $enabled && $sidebarreviews) {
+                $this->setTotals($total);
+                $this->setReviews($sidebarreviews);
+                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/sidebar.phtml';
+            }
+        }
+
+        if ($blockType == 'medium') {
+            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('medium');
+            if ($total && $enabled) {
+                $this->setTotals($total);
+                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/medium.phtml';
+            }
+        }
+
+        if ($blockType == 'small') {
+            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('small');
+            if ($total && $enabled) {
+                $this->setTotals($total);
+                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/small.phtml';
+            }
+        }
+
+        if ($blockType == 'summary') {
+            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('summary');
+            if ($total && $enabled) {
+                $this->setTotals($total);
+                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/summary.phtml';
+            }
+        }
+
+        if ($blockTypeTemplate) {
+            $this->addData(
+                array(
+                    'cache_lifetime' => 7200,
+                    'cache_tags' => array(
+                        Mage_Cms_Model_Block::CACHE_TAG,
+                        Magmodules_Feedbackcompany_Model_Reviews::CACHE_TAG
+                    ),
+                    'cache_key' => Mage::app()->getStore()->getStoreId() . '-' . $blockType . '-feedback-block',
+                )
+            );
+            parent::_construct();
+            $this->setTemplate($blockTypeTemplate);
+        }
+    }
 
     /**
      * @return mixed
@@ -77,70 +138,6 @@ class Magmodules_Feedbackcompany_Block_Custom extends Mage_Core_Block_Template
     public function getHtmlStars($percentage, $type)
     {
         return $this->helper('feedbackcompany')->getHtmlStars($percentage, $type);
-    }
-
-    /**
-     *
-     */
-    protected function _construct()
-    {
-        parent::_construct();
-
-        $blockType = $this->getData("blocktype");
-        $blockTypeTemplate = '';
-
-        if ($blockType == 'sidebar') {
-            $total = $this->helper('feedbackcompany')->getTotalScore();
-            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('sidebar');
-            $sidebarreviews = $this->helper('feedbackcompany')->getSidebarCollection('sidebar');
-            if ($total && $enabled && $sidebarreviews) {
-                $this->setTotals($total);
-                $this->setReviews($sidebarreviews);
-                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/sidebar.phtml';
-            }
-        }
-
-        if ($blockType == 'medium') {
-            $total = $this->helper('feedbackcompany')->getTotalScore();
-            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('medium');
-            if ($total && $enabled) {
-                $this->setTotals($total);
-                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/medium.phtml';
-            }
-        }
-
-        if ($blockType == 'small') {
-            $total = $this->helper('feedbackcompany')->getTotalScore();
-            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('small');
-            if ($total && $enabled) {
-                $this->setTotals($total);
-                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/small.phtml';
-            }
-        }
-
-        if ($blockType == 'summary') {
-            $total = $this->helper('feedbackcompany')->getTotalScore();
-            $enabled = $this->helper('feedbackcompany')->getBlockEnabled('summary');
-            if ($total && $enabled) {
-                $this->setTotals($total);
-                $blockTypeTemplate = 'magmodules/feedbackcompany/widget/summary.phtml';
-            }
-        }
-
-        if ($blockTypeTemplate) {
-            $this->addData(
-                array(
-                    'cache_lifetime' => 7200,
-                    'cache_tags' => array(
-                        Mage_Cms_Model_Block::CACHE_TAG,
-                        Magmodules_Feedbackcompany_Model_Reviews::CACHE_TAG
-                    ),
-                    'cache_key' => Mage::app()->getStore()->getStoreId() . '-' . $blockType . '-feedback-block',
-                )
-            );
-            parent::_construct();
-            $this->setTemplate($blockTypeTemplate);
-        }
     }
 
 }
