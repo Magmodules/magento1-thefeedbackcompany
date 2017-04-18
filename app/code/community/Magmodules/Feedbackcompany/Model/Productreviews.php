@@ -21,7 +21,7 @@
 class Magmodules_Feedbackcompany_Model_Productreviews extends Magmodules_Feedbackcompany_Model_Api
 {
 
-    const FBC_REVIEW_URL = 'https://beoordelingen.feedbackcompany.nl/api/v1/getrecent/?type=product&interval=last_week';
+    const FBC_REVIEW_URL = 'https://beoordelingen.feedbackcompany.nl/api/v1/review/getrecent/?type=product&interval=last_week';
     const FBC_REVIEW_URL_FULL = 'https://beoordelingen.feedbackcompany.nl/api/v1/review/all/?type=product';
     const XML_REVIEW_IMPORT_STATUS = 'feedbackcompany/productreviews/review_import_status';
     const XML_REVIEW_IMPORT_RATING = 'feedbackcompany/productreviews/review_import_rating';

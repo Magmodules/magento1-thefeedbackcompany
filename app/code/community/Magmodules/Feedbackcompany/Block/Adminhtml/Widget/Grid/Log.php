@@ -64,7 +64,7 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Grid_Log
             if ($row->getReviewNew() > 0) {
                 $msg = Mage::helper('feedbackcompany')->__('%s new productreview(s) imported', $row->getReviewNew());
             } else {
-                $msg = '';
+                $msg = Mage::helper('feedbackcompany')->__('No new reviews');
             }
         }
 

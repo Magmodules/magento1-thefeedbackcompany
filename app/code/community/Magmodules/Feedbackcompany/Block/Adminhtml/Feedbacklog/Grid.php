@@ -61,14 +61,6 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbacklog_Grid extends Mage_A
         $showApiUrl = Mage::app()->getRequest()->getParam('showapiurl');
 
         $this->addColumn(
-            'company', array(
-                'header' => Mage::helper('feedbackcompany')->__('Shop'),
-                'index'  => 'company',
-                'width'  => '120px',
-            )
-        );
-
-        $this->addColumn(
             'type', array(
                 'header'  => Mage::helper('feedbackcompany')->__('Type'),
                 'align'   => 'left',
@@ -103,6 +95,14 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbacklog_Grid extends Mage_A
                 'renderer' => 'feedbackcompany/adminhtml_widget_grid_log',
                 'filter'   => false,
                 'sortable' => false,
+            )
+        );
+
+        $this->addColumn(
+            'company', array(
+                'header' => Mage::helper('feedbackcompany')->__('Shop'),
+                'index'  => 'company',
+                'width'  => '120px',
             )
         );
 

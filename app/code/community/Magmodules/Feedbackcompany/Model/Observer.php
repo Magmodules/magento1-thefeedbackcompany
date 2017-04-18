@@ -59,7 +59,7 @@ class Magmodules_Feedbackcompany_Model_Observer
         foreach ($storeIds as $storeId) {
             $startTime = microtime(true);
             $results = Mage::getModel('feedbackcompany/reviews')->runUpdate($storeId, 'full');
-            $logModel->addToLog('reviews', $storeId, $results, '', $startTime, 'history');
+            $logModel->addToLog('reviews', $storeId, $results, '', $startTime, 'reviews');
         }
     }
 
@@ -73,7 +73,7 @@ class Magmodules_Feedbackcompany_Model_Observer
         foreach ($storeIds as $storeId) {
             $startTime = microtime(true);
             $results = Mage::getModel('feedbackcompany/productreviews')->runUpdate($storeId);
-            $logModel->addToLog('productreviews', $storeId, $results, '', $startTime, 'history');
+            $logModel->addToLog('productreviews', $storeId, $results, '', $startTime, 'productreviews');
         }
     }
 
