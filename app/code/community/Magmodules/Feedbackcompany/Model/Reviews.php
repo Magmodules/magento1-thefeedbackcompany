@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,13 +17,21 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Magmodules_Feedbackcompany_Model_Reviews extends Mage_Core_Model_Abstract
+
+class Magmodules_Feedbackcompany_Model_Reviews extends Magmodules_Feedbackcompany_Model_Api
 {
 
     const CACHE_TAG = 'feedback_block';
+    const XML_LAST_RUN = 'feedbackcompany/reviews/lastrun';
+    const XML_FLUSH_CACHE = 'feedbackcompany/reviews/flushcache';
+    const FBC_REVIEW_URL = 'https://beoordelingen.feedbackcompany.nl/api/v1/getrecent/?interval=last_week';
+    const FBC_REVIEW_URL_FULL = 'https://beoordelingen.feedbackcompany.nl/api/v1/review/all/';
+
+    public $new = 0;
+    public $update = 0;
 
     /**
-     *
+     * Reviews Constructor
      */
     public function _construct()
     {
@@ -33,120 +40,172 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Mage_Core_Model_Abstract
     }
 
     /**
-     * @param     $feed
-     * @param     $type
-     * @param int $storeId
+     * @param $storeId
+     * @param $type
      *
      * @return array
      */
-    public function processFeed($feed, $type, $storeId = 0)
+    public function runUpdate($storeId, $type)
     {
-        $updates = 0;
-        $new = 0;
-        $apiId = Mage::getStoreConfig('feedbackcompany/general/api_id', $storeId);
-        $company = Mage::getStoreConfig('feedbackcompany/general/company', $storeId);
+        $feed = $this->getFeed($storeId, $type);
 
-        if (!empty($feed->detailslink)) {
-            foreach ($feed->reviewDetails->reviewDetail as $review) {
-                $feedbackId = $review->id;
-                $score = ($review->score / 2);
-                $scoreMax = ($review->scoremax / 2);
-                $reviewText = $review->text;
-                $scoreAftersales = ($review->score_aftersales / 2);
-                $scoreCheckout = ($review->score_bestelgemak / 2);
-                $scoreInformation = ($review->score_informatievoorziening / 2);
-                $scoreFriendly = ($review->score_klantvriendelijk / 2);
-                $scoreLeadtime = ($review->score_levertijd / 2);
-                $scoreResponsetime = ($review->score_reactiesnelheid / 2);
-                $scoreOrder = ($review->score_orderverloop / 2);
-                $customerName = $review->user;
-                $customerRecommend = $review->beveeltAan;
-                $customerActive = $review->kooptvakeronline;
-                $customerSex = $review->geslacht;
-                $customerAge = $review->leeftijd;
-                $purchasedProducts = $review->gekochtproduct;
-                $textPositive = $review->sterkepunten;
-                $textImprovements = $review->verbeterpunten;
-                $companyResponse = $review->companyResponse;
-                $date = $review->createdate;
-                $dateCreated = substr($date, 0, 4) . '/' . substr($date, 4, 2) . '/' . substr($date, 6, 2);
-                $inDatabase = $this->getCollection()->addFieldToFilter('feedback_id', $feedbackId)->getFirstItem();
+        if ($feed['status'] != 'OK') {
+            return $feed;
+        }
 
-                if ($inDatabase->getReviewId()) {
-                    if (($type == 'history') || ($type == 'all')) {
-                        $reviews = Mage::getModel('feedbackcompany/reviews');
-                        $reviews->setReviewId($inDatabase->getReviewId())
-                            ->setShopId($apiId)
-                            ->setCompany($company)
-                            ->setFeedbackId($feedbackId)
-                            ->setReviewText($reviewText)
-                            ->setScore($score)
-                            ->setScoreMax($scoreMax)
-                            ->setScoreAftersales($scoreAftersales)
-                            ->setScoreCheckout($scoreCheckout)
-                            ->setScoreInformation($scoreInformation)
-                            ->setScoreFriendly($scoreFriendly)
-                            ->setScoreLeadtime($scoreLeadtime)
-                            ->setScoreResponsetime($scoreResponsetime)
-                            ->setScoreOrder($scoreOrder)
-                            ->setCustomerName($customerName)
-                            ->setCustomerRecommend($customerRecommend)
-                            ->setCustomerActive($customerActive)
-                            ->setCustomerSex($customerSex)
-                            ->setCustomerAge($customerAge)
-                            ->setPurchasedProducts($purchasedProducts)
-                            ->setTextPositive($textPositive)
-                            ->setTextImprovements($textImprovements)
-                            ->setCompanyResponse($companyResponse)
-                            ->setDateCreated($dateCreated)
-                            ->save();
-                        $updates++;
-                    }
-                } else {
-                    $reviews = Mage::getModel('feedbackcompany/reviews');
-                    $reviews->setShopId($apiId)
-                        ->setCompany($company)
-                        ->setFeedbackId($feedbackId)
-                        ->setReviewText($reviewText)
-                        ->setScore($score)
-                        ->setScoreMax($scoreMax)
-                        ->setScoreAftersales($scoreAftersales)
-                        ->setScoreCheckout($scoreCheckout)
-                        ->setScoreInformation($scoreInformation)
-                        ->setScoreFriendly($scoreFriendly)
-                        ->setScoreLeadtime($scoreLeadtime)
-                        ->setScoreResponsetime($scoreResponsetime)
-                        ->setScoreOrder($scoreOrder)
-                        ->setCustomerName($customerName)
-                        ->setCustomerRecommend($customerRecommend)
-                        ->setCustomerActive($customerActive)
-                        ->setCustomerSex($customerSex)
-                        ->setCustomerAge($customerAge)
-                        ->setPurchasedProducts($purchasedProducts)
-                        ->setTextPositive($textPositive)
-                        ->setTextImprovements($textImprovements)
-                        ->setCompanyResponse($companyResponse)
-                        ->setDateCreated($dateCreated)
-                        ->save();
-                    $new++;
-                }
+        if (!isset($feed['feed']['reviews'])) {
+            return array();
+        }
+
+        foreach ($feed['feed']['reviews'] as $review) {
+            $reviewId = $this->getReviewIdByFeedbackId($review['id']);
+            if (!empty($reviewId) && ($type != 'full')) {
+                continue;
             }
 
-            $config = Mage::getModel('core/config');
-            $config->saveConfig('feedbackcompany/reviews/lastrun', now(), 'default', 0);
-
-            $result = array();
-            $result['review_updates'] = $updates;
-            $result['review_new'] = $new;
-            $result['company'] = $company;
-            return $result;
-        } else {
-            $result = array();
-            $result['review_updates'] = 0;
-            $result['review_new'] = 0;
-            $result['company'] = '';
-            return $result;
+            $this->saveReview(
+                array(
+                    'review_id'          => $reviewId,
+                    'feedback_id'        => $review['id'],
+                    'company'            => $feed['feed']['shop']['webshop_name'],
+                    'shop_id'            => $feed['feed']['shop']['id'],
+                    'score'              => $review['total_score'],
+                    'buy_online'         => $review['buy_online'],
+                    'customer_recommend' => $this->getRecommends($review['recommends']),
+                    'review_text'        => $this->getReviewTextFromQuestions($review['questions']),
+                    'customer_name'      => $review['client']['name'],
+                    'customer_sex'       => $review['client']['gender'],
+                    'customer_age'       => $review['client']['age'],
+                    'customer_city'      => $review['client']['city'],
+                    'customer_email'     => $review['client']['email'],
+                    'customer_country'   => $review['client']['country'],
+                    'shop_comment'       => $review['shop_comment'],
+                    'product'            => $review['product'],
+                    'questions'          => json_encode($review['questions']),
+                    'date_created'       => $this->reformatDate($review['date_created']),
+                    'date_updated'       => $this->reformatDate($review['date_updated']),
+                )
+            );
         }
+
+        Mage::helper('feedbackcompany')->saveConfigValue(self::XML_LAST_RUN, now());
+
+        return array(
+            'status'  => 'OK',
+            'update'  => $this->update,
+            'new'     => $this->new,
+            'company' => $feed['feed']['shop']['webshop_name']
+        );
+
+    }
+
+    /**
+     * @param $storeId
+     * @param $type
+     *
+     * @return array
+     */
+    public function getFeed($storeId, $type)
+    {
+        $apiUrl = self:: FBC_REVIEW_URL;
+
+        if ($type == 'full') {
+            $apiUrl = self:: FBC_REVIEW_URL_FULL;
+        }
+
+        $apiResult = $this->makeRequest($apiUrl, $storeId);
+
+        if ($apiResult) {
+            if (!empty($apiResult['message']) && $apiResult['message'] == 'OK') {
+                return array(
+                    'status' => 'OK',
+                    'feed'   => $apiResult['data'][0]
+                );
+            }
+            return array(
+                'status' => 'ERROR',
+                'error'  => isset($apiResult['error']) ? $apiResult['error'] : ''
+            );
+        } else {
+            return array(
+                'status' => 'ERROR',
+                'error'  => Mage::helper('feedbackcompany')->__('Error connect to the API.')
+            );
+        }
+    }
+
+    /**
+     * @param $feedbackId
+     *
+     * @return mixed
+     */
+    public function getReviewIdByFeedbackId($feedbackId)
+    {
+        $reviewId = $this->getCollection()
+            ->addFieldToFilter('feedback_id', $feedbackId)
+            ->addFieldToSelect('review_id')
+            ->getFirstItem()
+            ->getReviewId();
+
+        return $reviewId;
+    }
+
+    /**
+     * @param $data
+     */
+    public function saveReview($data)
+    {
+        Mage::getModel('feedbackcompany/reviews')->setData($data)->save();
+        if ($data['review_id'] > 0) {
+            $this->update++;
+        } else {
+            $this->new++;
+        }
+    }
+
+    /**
+     * @param $recommends
+     *
+     * @return int
+     */
+    public function getRecommends($recommends)
+    {
+        if (strtolower($recommends) == 'ja') {
+            return 1;
+        }
+
+        if (strtolower($recommends) == 'nee') {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    /**
+     * @param $questions
+     *
+     * @return mixed
+     */
+    public function getReviewTextFromQuestions($questions)
+    {
+        foreach ($questions as $question) {
+            if ($question['type'] == 'main_open') {
+                return $question['value'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @param $date
+     *
+     * @return string
+     */
+    public function reformatDate($date)
+    {
+        $datetime = DateTime::createFromFormat('F, j Y H:i:s T', $date);
+        return $datetime->format('Y-m-d H:i:s');
     }
 
     /**
@@ -154,7 +213,7 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Mage_Core_Model_Abstract
      */
     public function flushCache()
     {
-        if (Mage::getStoreConfig('feedbackcompany/reviews/flushcache')) {
+        if (Mage::getStoreConfig(self::XML_FLUSH_CACHE)) {
             Mage::app()->cleanCache(
                 array(
                     Mage_Cms_Model_Block::CACHE_TAG,

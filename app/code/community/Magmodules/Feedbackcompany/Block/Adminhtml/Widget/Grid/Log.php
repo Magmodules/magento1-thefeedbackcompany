@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Grid_Log
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Action
 {
@@ -64,7 +64,7 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Grid_Log
             if ($row->getReviewNew() > 0) {
                 $msg = Mage::helper('feedbackcompany')->__('%s new productreview(s) imported', $row->getReviewNew());
             } else {
-                $msg = '';
+                $msg = Mage::helper('feedbackcompany')->__('No new reviews');
             }
         }
 

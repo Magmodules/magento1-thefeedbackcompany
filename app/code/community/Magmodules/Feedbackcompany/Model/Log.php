@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Model_Log extends Mage_Core_Model_Abstract
 {
 
@@ -32,65 +32,32 @@ class Magmodules_Feedbackcompany_Model_Log extends Mage_Core_Model_Abstract
 
     /**
      * @param        $type
-     * @param        $storeId
+     * @param        $sId
      * @param string $review
-     * @param string $response
-     * @param        $time
-     * @param string $crontype
-     * @param string $apiUrl
-     * @param string $orderId
+     * @param string $res
+     * @param string $t
+     * @param string $cron
+     * @param string $aUrl
+     * @param string $oId
      */
-    public function addToLog(
-        $type,
-        $storeId,
-        $review = '',
-        $response = '',
-        $time,
-        $crontype = '',
-        $apiUrl = '',
-        $orderId = ''
-    )
+    public function addToLog($type, $sId, $review = '', $res = '', $t = '', $cron = '', $aUrl = '', $oId = '') 
     {
         if (Mage::getStoreConfig('feedbackcompany/log/enabled')) {
-            if ($type == 'productreview') {
-                $apiId = Mage::getStoreConfig('feedbackcompany/productreviews/client_token', $storeId);
-                $apiUrl = Mage::getStoreConfig('feedbackcompany/productreviews/client_token', $storeId);
-            } else {
-                $apiId = Mage::getStoreConfig('feedbackcompany/general/api_id', $storeId);
-            }
-
-            $company = Mage::getStoreConfig('feedbackcompany/general/company', $storeId);
-            $reviewUpdates = '';
-            $reviewNew = '';
-
-            if ($review) {
-                if (!empty($review['review_updates'])) {
-                    $reviewUpdates = $review['review_updates'];
-                }
-
-                if (!empty($review['review_new'])) {
-                    $reviewNew = $review['review_new'];
-                }
-
-                if (!empty($review['stats']['msg'])) {
-                    $response = $review['stats']['msg'];
-                }
-            }
-
-            $logModel = Mage::getModel('feedbackcompany/log');
-            $logModel->setType($type)
-                ->setShopId($apiId)
-                ->setStoreId($storeId)
-                ->setCompany($company)
-                ->setReviewUpdate($reviewUpdates)
-                ->setReviewNew($reviewNew)
-                ->setResponse($response)
-                ->setOrderId($orderId)
-                ->setCron($crontype)
-                ->setDate(now())
-                ->setTime($time)
-                ->setApiUrl($apiUrl)
-                ->save();
+            $data = array(
+                'type'           => $type,
+                'shop_id'        => Mage::getModel('feedbackcompany/api')->getClientId($sId),
+                'store_id'       => $sId,
+                'company'        => isset($review['company']) ? $review['company'] : '',
+                'review_updates' => isset($review['update']) ? $review['update'] : '',
+                'review_new'     => isset($review['new']) ? $review['new'] : '',
+                'response'       => $res,
+                'order_id'       => $oId,
+                'cron'           => $cron,
+                'date'           => date('Y-m-d H:i:s'),
+                'time'           => isset($t) ? (microtime(true) - $t) : '',
+                'api_url'        => $aUrl
+            );
+            Mage::getModel('feedbackcompany/log')->setData($data)->save();
         }
     }
 

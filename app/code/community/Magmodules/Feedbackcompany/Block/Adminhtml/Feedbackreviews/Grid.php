@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbackreviews_Grid
     extends Mage_Adminhtml_Block_Widget_Grid
 {
@@ -61,26 +61,34 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbackreviews_Grid
     {
 
         $this->addColumn(
-            'company', array(
-                'header' => Mage::helper('feedbackcompany')->__('Shop'),
-                'index' => 'company',
-                'width' => '120px',
+            'review_id', array(
+                'header' => Mage::helper('feedbackcompany')->__('ID'),
+                'index' => 'feedback_id',
+                'width' => '60px',
             )
         );
 
         $this->addColumn(
+            'company', array(
+                'header' => Mage::helper('feedbackcompany')->__('Shop'),
+                'index' => 'company',
+            )
+        );
+
+
+        $this->addColumn(
             'customer_name', array(
-                'header' => Mage::helper('feedbackcompany')->__('User'),
+                'header' => Mage::helper('feedbackcompany')->__('Name'),
                 'align' => 'left',
                 'index' => 'customer_name',
             )
         );
 
         $this->addColumn(
-            'purchased_products', array(
-                'header' => Mage::helper('feedbackcompany')->__('Product(s)'),
+            'customer_email', array(
+                'header' => Mage::helper('feedbackcompany')->__('Email'),
                 'align' => 'left',
-                'index' => 'purchased_products',
+                'index' => 'customer_email',
             )
         );
 
@@ -89,7 +97,7 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbackreviews_Grid
                 'header' => Mage::helper('feedbackcompany')->__('Review'),
                 'align' => 'left',
                 'index' => 'review_text',
-                'renderer' => 'feedbackcompany/adminhtml_feedbackreviews_renderer_experience',
+                'renderer' => 'feedbackcompany/adminhtml_widget_grid_experience',
             )
         );
 
@@ -102,42 +110,6 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbackreviews_Grid
                 'width' => '110',
                 'filter' => false,
                 'sortable' => true,
-            )
-        );
-
-        $this->addColumn(
-            'customer_active', array(
-                'header' => Mage::helper('feedbackcompany')->__('Purchase'),
-                'align' => 'left',
-                'index' => 'customer_active',
-                'type' => 'options',
-                'options' => array(
-                    'sometimes' => Mage::helper('feedbackcompany')->__('Sometimes'),
-                    'regularly' => Mage::helper('feedbackcompany')->__('Regularly'),
-                    'often' => Mage::helper('feedbackcompany')->__('Often'),
-                ),
-            )
-        );
-
-        $this->addColumn(
-            'customer_sex', array(
-                'header' => Mage::helper('feedbackcompany')->__('Gender'),
-                'align' => 'left',
-                'index' => 'customer_sex',
-                'type' => 'options',
-                'options' => array(
-                    'male' => Mage::helper('feedbackcompany')->__('Male'),
-                    'female' => Mage::helper('feedbackcompany')->__('Female'),
-                ),
-            )
-        );
-
-        $this->addColumn(
-            'customer_age', array(
-                'header' => Mage::helper('feedbackcompany')->__('Age'),
-                'align' => 'left',
-                'index' => 'customer_age',
-                'width' => '50',
             )
         );
 

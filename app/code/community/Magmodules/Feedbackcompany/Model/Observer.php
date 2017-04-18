@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Model_Observer
 {
 
@@ -26,20 +26,12 @@ class Magmodules_Feedbackcompany_Model_Observer
      */
     public function processStats()
     {
-        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
+        $logModel = Mage::getModel('feedbackcompany/log');
+        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds('cron');
         foreach ($storeIds as $storeId) {
-            $enabled = Mage::getStoreConfig('feedbackcompany/general/enabled', $storeId);
-            $cronEnabled = Mage::getStoreConfig('feedbackcompany/reviews/cron', $storeId);
-            if ($enabled && $cronEnabled) {
-                $cronType = 'stats';
-                $startTime = microtime(true);
-                $feed = Mage::getModel('feedbackcompany/api')->getFeed($storeId, $cronType);
-                $results = array();
-                $results['stats'] = Mage::getModel('feedbackcompany/stats')->processFeed($feed, $storeId);
-                $results['company'] = $feed->company;
-                $log = Mage::getModel('feedbackcompany/log');
-                $log->addToLog('reviews', $storeId, $results, '', (microtime(true) - $startTime), $cronType);
-            }
+            $startTime = microtime(true);
+            $results = Mage::getModel('feedbackcompany/stats')->runUpdate($storeId);
+            $logModel->addToLog('reviews', $storeId, $results, '', $startTime, 'stats');
         }
     }
 
@@ -48,45 +40,12 @@ class Magmodules_Feedbackcompany_Model_Observer
      */
     public function processReviews()
     {
-        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
+        $logModel = Mage::getModel('feedbackcompany/log');
+        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds('cron');
         foreach ($storeIds as $storeId) {
-            $enabled = Mage::getStoreConfig('feedbackcompany/general/enabled', $storeId);
-            $cronEnabled = Mage::getStoreConfig('feedbackcompany/reviews/cron', $storeId);
-            if ($enabled && $cronEnabled) {
-                $cronType = 'reviews';
-                $startTime = microtime(true);
-                $feed = Mage::getModel('feedbackcompany/api')->getFeed($storeId, $cronType);
-                $results = Mage::getModel('feedbackcompany/reviews')->processFeed($feed, $cronType, $storeId);
-                $results['stats'] = Mage::getModel('feedbackcompany/stats')->processFeed($feed, $storeId);
-                $log = Mage::getModel('feedbackcompany/log');
-                $log->addToLog('reviews', $storeId, $results, '', (microtime(true) - $startTime), $cronType);
-            }
-        }
-    }
-
-    /**
-     * Productreviews cron
-     */
-    public function processProductreviews()
-    {
-        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
-        foreach ($storeIds as $storeId) {
-            $enabled = Mage::getStoreConfig('feedbackcompany/general/enabled', $storeId);
-            $reviewsEnabled = Mage::getStoreConfig('feedbackcompany/productreviews/enabled', $storeId);
-            $cronEnabled = Mage::getStoreConfig('feedbackcompany/productreviews/cron');
-            if ($enabled && $cronEnabled && $reviewsEnabled) {
-                $cronType = 'productreviews';
-                $startTime = microtime(true);
-                $feed = Mage::getModel('feedbackcompany/api')->getFeed($storeId, $cronType, 'last_month');
-                if ($feed['status'] == 'OK') {
-                    $results = Mage::getModel('feedbackcompany/productreviews')->processFeed($feed, $storeId);
-                    if ($results['review_new'] > 0) {
-                        $time = (microtime(true) - $startTime);
-                        $log = Mage::getModel('feedbackcompany/log');
-                        $log->addToLog('productreviews', $storeId, $results, '', $time, $cronType);
-                    }
-                }
-            }
+            $startTime = microtime(true);
+            $results = Mage::getModel('feedbackcompany/reviews')->runUpdate($storeId);
+            $logModel->addToLog('reviews', $storeId, $results, '', $startTime, 'reviews');
         }
     }
 
@@ -95,20 +54,26 @@ class Magmodules_Feedbackcompany_Model_Observer
      */
     public function processHistory()
     {
-        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds();
+        $logModel = Mage::getModel('feedbackcompany/log');
+        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds('cron');
         foreach ($storeIds as $storeId) {
-            $enabled = Mage::getStoreConfig('feedbackcompany/general/enabled', $storeId);
-            $cronEnabled = Mage::getStoreConfig('feedbackcompany/reviews/cron', $storeId);
-            if ($enabled && $cronEnabled) {
-                $cronType = 'history';
-                $startTime = microtime(true);
-                $storeId = 0;
-                $feed = Mage::getModel('feedbackcompany/api')->getFeed($storeId, $cronType);
-                $results = Mage::getModel('feedbackcompany/reviews')->processFeed($feed, $cronType, $storeId);
-                $results['stats'] = Mage::getModel('feedbackcompany/stats')->processFeed($feed, $storeId);
-                $log = Mage::getModel('feedbackcompany/log');
-                $log->addToLog('reviews', $storeId, $results, '', (microtime(true) - $startTime), $cronType);
-            }
+            $startTime = microtime(true);
+            $results = Mage::getModel('feedbackcompany/reviews')->runUpdate($storeId, 'full');
+            $logModel->addToLog('reviews', $storeId, $results, '', $startTime, 'reviews');
+        }
+    }
+
+    /**
+     * Productreviews cron
+     */
+    public function processProductreviews()
+    {
+        $logModel = Mage::getModel('feedbackcompany/log');
+        $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds('prcron');
+        foreach ($storeIds as $storeId) {
+            $startTime = microtime(true);
+            $results = Mage::getModel('feedbackcompany/productreviews')->runUpdate($storeId);
+            $logModel->addToLog('productreviews', $storeId, $results, '', $startTime, 'productreviews');
         }
     }
 
@@ -121,10 +86,9 @@ class Magmodules_Feedbackcompany_Model_Observer
         $days = Mage::getStoreConfig('feedbackcompany/log/clean_days', 0);
         if (($enabled) && ($days > 0)) {
             $deldate = date('Y-m-d', strtotime('-' . $days . ' days'));
-            $logs = Mage::getModel('feedbackcompany/log')->getCollection()->addFieldToSelect('id')->addFieldToFilter(
-                'date',
-                array('lteq' => $deldate)
-            );
+            $logs = Mage::getModel('feedbackcompany/log')->getCollection()
+                ->addFieldToSelect('id')
+                ->addFieldToFilter('date', array('lteq' => $deldate));
             foreach ($logs as $log) {
                 $log->delete();
             }
@@ -205,7 +169,7 @@ class Magmodules_Feedbackcompany_Model_Observer
                 'reviewsexport',
                 array(
                     'label' => Mage::helper('feedbackcompany')->__('Export Reviews'),
-                    'url' => Mage::app()->getStore()->getUrl('*/feedbackreviews/exportcsv/filter/' . $filter),
+                    'url'   => Mage::app()->getStore()->getUrl('*/feedbackreviews/exportcsv/filter/' . $filter),
                 )
             );
         }

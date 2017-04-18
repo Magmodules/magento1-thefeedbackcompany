@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,6 +17,7 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Info_Info extends Mage_Adminhtml_Block_Abstract
     implements Varien_Data_Form_Element_Renderer_Interface
 {
@@ -33,7 +33,8 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Info_Info extends Mage_A
         $moduleVersion = Mage::getConfig()->getNode()->modules->Magmodules_Feedbackcompany->version;
         $logoLink = '//www.magmodules.eu/logo/feedbackcompany/' . $moduleVersion . '/' . $magentoVersion . '/logo.png';
 
-        $html = '<div style="background:url(\'' . $logoLink . '\') no-repeat scroll 15px center #EAF0EE;border:1px solid #CCC;margin-bottom:10px;padding:10px 5px 5px 200px;">
+        $html = '<div style="background:url(\'' . $logoLink . '\') no-repeat scroll 15px center #EAF0EE;
+        border:1px solid #CCC;margin-bottom:10px;padding:10px 5px 5px 200px;">
 			<h4>About Magmodules.eu</h4>
 			<p>We are a Magento only E-commerce Agency located in the Netherlands.<br>
             <br />
@@ -70,11 +71,6 @@ class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Info_Info extends Mage_A
 				</tr>
 			 </table>
            </div>';
-
-        if (file_exists(Mage::getBaseDir('app') . DS . 'code' . DS . 'local' . DS . 'Magmodules' . DS . 'Feedbackcompany')) {
-            $msg = '<div id="messages"><ul class="messages"><li class="error-msg"><ul><li><span>' . Mage::helper('adminhtml')->__('There is an older version detected on the server, please remove the directory <u>app/code/local/Magmodules/Feedbackcompany</u> from your server using FTP and flush cache.') . '</span></li></ul></li></ul></div>';
-            $html = $msg . $html;
-        }
 
         return $html;
     }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Magmodules.eu - http://www.magmodules.eu
  *
@@ -18,7 +17,8 @@
  * @copyright     Copyright (c) 2017 (http://www.magmodules.eu)
  * @license       http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Magmodules_Feedbackcompany_Block_Adminhtml_Feedbackreviews_Renderer_Experience
+
+class Magmodules_Feedbackcompany_Block_Adminhtml_Widget_Grid_Experience
     extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
 
