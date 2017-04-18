@@ -115,7 +115,7 @@
 "Sometimes","As vezes"
 "Stats Cron","Stats Cron"
 "Strong:","Forte:"
-"Specify at which status you want to send the invitation. Default is ""Completed"","Determine em qual status de pedido enviaremos o email."
+"Specify at which status you want to send the invitation. Default is Completed","Determine em qual status de pedido enviaremos o email."
 "Succefully deleted all %s saved review(s).","Deletou com sucesso todas %s avaliações salvas."
 "Test API","Teste API"
 "Text of the product link, use {{name}} to show the productname.","Texto do link do produto, use {{name}} para mostar o nome do produto / productname."
