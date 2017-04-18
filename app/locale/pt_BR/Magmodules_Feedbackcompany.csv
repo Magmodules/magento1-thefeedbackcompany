@@ -135,7 +135,7 @@
 "Total of %d review(s) were removed from the sidebar.","Total de %d opiniões foi removido da barra lateral."
 "Total of %s log record(s) deleted.","Total de %s registros de log deletados."
 "To display the latest reviews in your store, you must import the reviews. <br/> This can be done automatically or manually.<br/><br/>","Para exibir as opiniões mais recentes em sua loja, você deverá importá-las. <br/> Isso pode ser feito automaticamente ou manualmente.<br/><br/>"
-"Twice a Day,""2 vezes ao dia"""
+"Twice a Day","2 vezes ao dia"
 "There is an older version detected on the server, please remove the directory <u>app/code/local/Magmodules/Feedbackcompany</u> from your server using FTP and flush cache.","Há uma versão mais antiga detectada no servidor, remova o diretório  <u>app/code/local/Magmodules/Feedbackcompany</u> do seu servidor usando seu acesso FTP e limpe cache."
 "Type","Tipo"
 "The Feedbackcompany Blocks","The Feedbackcompany Blocos"
