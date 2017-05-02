@@ -208,19 +208,4 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Magmodules_Feedbackcompan
         return $datetime->format('Y-m-d H:i:s');
     }
 
-    /**
-     * Flush Cache function
-     */
-    public function flushCache()
-    {
-        if (Mage::getStoreConfig(self::XML_FLUSH_CACHE)) {
-            Mage::app()->cleanCache(
-                array(
-                    Mage_Cms_Model_Block::CACHE_TAG,
-                    Magmodules_Feedbackcompany_Model_Reviews::CACHE_TAG
-                )
-            );
-        }
-    }
-
 }
