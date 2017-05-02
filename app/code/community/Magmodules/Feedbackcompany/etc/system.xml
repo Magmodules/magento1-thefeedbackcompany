@@ -49,8 +49,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                    <comment>
-                        <![CDATA[The Feedback Company will sent you the Oauth2 details which can be filled in below.<br>If you haven't received the Oauth2 details you can request them manually by sending an e-mail to<a href="mailto:support@feedbackcompany.com">support@feedbackcompany.com</a>.<br/> As addition next to the activation of this extension we also recommend you to place the appropriate The Feedback Company logo.<br/><br/>]]></comment>
+                    <comment><![CDATA[The Feedback Company will sent you the Oauth2 details which can be filled in below.<br>If you haven't received the Oauth2 details you can request them manually by sending an e-mail to<a href="mailto:support@feedbackcompany.com">support@feedbackcompany.com</a>.<br/> As addition next to the activation of this extension we also recommend you to place the appropriate The Feedback Company logo.<br/><br/>]]></comment>
                     <fields>
                         <version translate="label">
                             <label>Extension Version</label>
@@ -102,6 +101,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </client_secret>
+
                     </fields>
                 </general>
                 <reviews translate="label" module="feedbackcompany">
@@ -205,8 +205,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                    <comment>
-                        <![CDATA[Show the latest reviews directly in the right or left area of your store to gain trust and directly show your client reviews.<br/><br/>]]></comment>
+                    <comment><![CDATA[Show the latest reviews directly in the right or left area of your store to gain trust and directly show your client reviews.<br/><br/>]]></comment>
                     <fields>
                         <left_heading translate="label">
                             <label>Left Sidebar</label>
@@ -358,8 +357,7 @@
                             <show_in_store>1</show_in_store>
                         </sidebar_heading>
                         <sidebar_note translate="label">
-                            <label>
-                                <![CDATA[You can add this custom block by pasting the following code into your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="sidebar"}}]]></label>
+                            <label><![CDATA[You can add this custom block by pasting the following code into your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="sidebar"}}]]></label>
                             <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
                             <sort_order>11</sort_order>
                             <show_in_default>1</show_in_default>
@@ -432,8 +430,7 @@
                             <show_in_store>1</show_in_store>
                         </small_heading>
                         <small_note translate="label">
-                            <label>
-                                <![CDATA[You can add this custom block by pasting the following code in your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="small"}}]]></label>
+                            <label><![CDATA[You can add this custom block by pasting the following code in your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="small"}}]]></label>
                             <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
                             <sort_order>21</sort_order>
                             <show_in_default>1</show_in_default>
@@ -494,8 +491,7 @@
                             <show_in_store>1</show_in_store>
                         </medium_heading>
                         <medium_note translate="label">
-                            <label>
-                                <![CDATA[You can add this custom block by pasting the following code in your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="medium"}}]]></label>
+                            <label><![CDATA[You can add this custom block by pasting the following code in your CMS page or Static Block.<br/>{{block type="feedbackcompany/custom" name="feedbackcompany" blocktype="medium"}}]]></label>
                             <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
                             <sort_order>41</sort_order>
                             <show_in_default>1</show_in_default>
@@ -580,8 +576,7 @@
                             <show_in_store>1</show_in_store>
                         </header_heading>
                         <header_note translate="label">
-                            <label>
-                                <![CDATA[The documentation to implement The Feedback Company header widget can be found <a href="http://www.magmodules.eu/help/feedbackcompany/the-feedback-company-header-widget/">here</a>.]]></label>
+                            <label><![CDATA[The documentation to implement The Feedback Company header widget can be found <a href="http://www.magmodules.eu/help/feedbackcompany/the-feedback-company-header-widget/">here</a>.]]></label>
                             <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
                             <sort_order>51</sort_order>
                             <show_in_default>1</show_in_default>
@@ -631,8 +626,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <expanded>1</expanded>
-                    <comment>
-                        <![CDATA[You can import your customer reviews and display them in your store as new content.<br>Link: http://www.mywebshop.com/<strong>feedbackcompany</strong><br><br>]]></comment>
+                    <comment><![CDATA[You can import your customer reviews and display them in your store as new content.<br>Link: http://www.mywebshop.com/<strong>feedbackcompany</strong><br><br>]]></comment>
                     <fields>
                         <enabled translate="label">
                             <label>Enabled</label>
@@ -871,8 +865,7 @@
                             <depends>
                                 <exclude_category>1</exclude_category>
                             </depends>
-                            <comment>
-                                <![CDATA[The invitation e-mail will not be sent whenever there is ordered a product from one of the selected categories.]]></comment>
+                            <comment><![CDATA[The invitation e-mail will not be sent whenever there is ordered a product from one of the selected categories.]]></comment>
                         </exclude_categories>
                     </fields>
                 </invitation>
@@ -898,8 +891,7 @@
                     <expanded>1</expanded>
                     <fields>
                         <products_note translate="label">
-                            <label>
-                                <![CDATA[This option is still in beta, contact The Feedback Company for more information.<br/>]]></label>
+                            <label><![CDATA[This option is still in beta, contact The Feedback Company for more information.<br/>]]></label>
                             <frontend_model>feedbackcompany/adminhtml_widget_form_note</frontend_model>
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1016,8 +1008,7 @@
                     <show_in_website>0</show_in_website>
                     <show_in_store>0</show_in_store>
                     <expanded>1</expanded>
-                    <comment>
-                        <![CDATA[Logs can be activated in order to detect errors.<br/> This feature is particularly for developers.<br/><br/>]]></comment>
+                    <comment><![CDATA[Logs can be activated in order to detect errors.<br/> This feature is particularly for developers.<br/><br/>]]></comment>
                     <fields>
                         <enabled translate="label">
                             <label>Enable Log Function</label>
