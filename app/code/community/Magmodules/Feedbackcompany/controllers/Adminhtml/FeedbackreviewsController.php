@@ -148,7 +148,6 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
             }
         }
 
-        Mage::getModel('feedbackcompany/reviews')->flushCache();
         $this->_redirect('*/*/index');
     }
 
@@ -175,7 +174,6 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
             }
         }
 
-        Mage::getModel('feedbackcompany/reviews')->flushCache();
         $this->_redirect('*/*/index');
     }
 
@@ -202,7 +200,6 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
             }
         }
 
-        Mage::getModel('feedbackcompany/reviews')->flushCache();
         $this->_redirect('*/*/index');
     }
 
@@ -228,7 +225,6 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
             }
         }
 
-        Mage::getModel('feedbackcompany/reviews')->flushCache();
         $this->_redirect('*/*/index');
     }
 
@@ -247,7 +243,6 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
         $msg = $this->__('Succefully deleted all %s saved review(s).', $i);
 
         Mage::getSingleton('adminhtml/session')->addSuccess($msg);
-        Mage::getModel('feedbackcompany/reviews')->flushCache();
         $this->_redirect('*/*/index');
     }
 

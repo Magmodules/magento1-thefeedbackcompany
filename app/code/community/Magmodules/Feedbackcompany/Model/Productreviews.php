@@ -75,6 +75,7 @@ class Magmodules_Feedbackcompany_Model_Productreviews extends Magmodules_Feedbac
 
                     $createdAt = $this->reformatDate($review['date_created']);
                     $nickName = $review['client']['name'];
+                    $ratingVal = $review['rating'];
                     $id = $review['id'];
 
                     $review = Mage::getModel('review/review');
@@ -96,7 +97,7 @@ class Magmodules_Feedbackcompany_Model_Productreviews extends Magmodules_Feedbac
                     $rating->setRatingId($ratingId);
                     $rating->setReviewId($review->getId());
                     $rating->setCustomerId(null);
-                    $rating->addOptionVote($options[$id], $productId);
+                    $rating->addOptionVote($options[$ratingVal], $productId);
                     $review->aggregate();
                 }
             } catch (Exception $e) {

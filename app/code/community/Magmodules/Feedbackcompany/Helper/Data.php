@@ -232,14 +232,14 @@ class Magmodules_Feedbackcompany_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param        $sidebarreview
+     * @param        $review
      * @param string $sidebar
      *
      * @return string
      */
-    public function formatContent($sidebarreview, $sidebar = 'left')
+    public function formatContent($review, $sidebar = 'left')
     {
-        $content = $sidebarreview->getReviewText();
+        $content = $review->getReviewText();
         $charLimit = '';
         if ($sidebar == 'left') {
             $charLimit = Mage::getStoreConfig('feedbackcompany/sidebar/left_lenght');

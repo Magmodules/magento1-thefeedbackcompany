@@ -27,58 +27,17 @@ class Magmodules_Feedbackcompany_Block_Sidebar extends Mage_Core_Block_Template
      */
     public function getSidebarCollection($sidebar)
     {
-        $enabled = '';
-        $qty = '5';
-        if (Mage::getStoreConfig('feedbackcompany/general/enabled')) {
-            if ($sidebar == 'left') {
-                $qty = Mage::getStoreConfig('feedbackcompany/sidebar/left_qty');
-                $enabled = Mage::getStoreConfig('feedbackcompany/sidebar/left');
-            }
-
-            if ($sidebar == 'right') {
-                $qty = Mage::getStoreConfig('feedbackcompany/sidebar/right_qty');
-                $enabled = Mage::getStoreConfig('feedbackcompany/sidebar/right');
-            }
-        }
-
-        if ($enabled) {
-            $shopId = Mage::getStoreConfig('feedbackcompany/general/api_id');
-            $collection = Mage::getModel("feedbackcompany/reviews")->getCollection();
-            $collection->setOrder('date_created', 'DESC');
-            $collection->addFieldToFilter('status', 1);
-            $collection->addFieldToFilter('sidebar', 1);
-            $collection->addFieldToFilter('shop_id', array('eq' => array($shopId)));
-            $collection->setPageSize($qty);
-            $collection->load();
-
-            return $collection;
-        } else {
-            return false;
-        }
+        return Mage::helper('feedbackcompany')->getSidebarCollection($sidebar);
     }
 
     /**
-     * @param $sidebarreview
+     * @param $review
      * @param string $sidebar
      * @return mixed
      */
-    public function formatContent($sidebarreview, $sidebar = 'left')
+    public function formatContent($review, $sidebar = 'left')
     {
-        $content = $sidebarreview->getReviewText();
-        $charLimit = '120';
-
-        if ($sidebar == 'left') {
-            $charLimit = Mage::getStoreConfig('feedbackcompany/sidebar/left_lenght');
-        }
-
-        if ($sidebar == 'right') {
-            $charLimit = Mage::getStoreConfig('feedbackcompany/sidebar/right_lenght');
-        }
-
-        $content = Mage::helper('core/string')->truncate($content, $charLimit, ' ...');
-
-        return $content;
-
+        return Mage::helper('feedbackcompany')->formatContent($review, $sidebar);
     }
 
     /**
@@ -87,30 +46,11 @@ class Magmodules_Feedbackcompany_Block_Sidebar extends Mage_Core_Block_Template
      */
     public function getReviewsUrl($sidebar = 'left')
     {
-        $url = '';
-        $link = '';
-
-        if ($sidebar == 'left') {
-            $link = Mage::getStoreConfig('feedbackcompany/sidebar/left_link');
-        }
-
-        if ($sidebar == 'right') {
-            $link = Mage::getStoreConfig('feedbackcompany/sidebar/right_link');
-        }
-
-        if ($link == 'internal') {
-            $url = $this->getUrl('feedbackcompany');
-        }
-
-        if ($link == 'external') {
-            $url = Mage::getStoreConfig('feedbackcompany/general/url');
-        }
-
-        if ($url) {
+        if($url = Mage::helper('feedbackcompany')->getReviewsUrl($sidebar)) {
             return '<a href="' . $url . '" target="_blank">' . $this->__('View all reviews') . '</a>';
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -119,21 +59,7 @@ class Magmodules_Feedbackcompany_Block_Sidebar extends Mage_Core_Block_Template
      */
     public function getSnippetsEnabled($sidebar = 'left')
     {
-        $enabled = '';
-
-        if ($sidebar == 'left') {
-            $enabled = Mage::getStoreConfig('feedbackcompany/sidebar/left_snippets');
-        }
-
-        if ($sidebar == 'right') {
-            $enabled = Mage::getStoreConfig('feedbackcompany/sidebar/right_snippets');
-        }
-
-        if ($enabled && ($this->getRequest()->getRouteName() != 'feedbackcompany')) {
-            return true;
-        }
-
-        return false;
+        return Mage::helper('feedbackcompany')->getSnippetsEnabled($sidebar);
     }
 
     /**
@@ -144,14 +70,23 @@ class Magmodules_Feedbackcompany_Block_Sidebar extends Mage_Core_Block_Template
         return $this->helper('feedbackcompany')->getTotalScore();
     }
 
+    /**
+     * @param $votes
+     *
+     * @return string
+     */
     public function getVotesHtml($votes)
     {
         return $this->__('Based on %s reviews', '<span itemprop="ratingCount">' .$votes . '</span>');
     }
 
+    /**
+     * @return string
+     */
     public function getLogoHtml()
     {
         $img = $this->getSkinUrl('magmodules/feedbackcompany/images/logo.png');
         return '<img src="' . $img .'" class="feedbackcompany-logo">';
     }
+
 }
