@@ -45,7 +45,7 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Magmodules_Feedbackcompan
      *
      * @return array
      */
-    public function runUpdate($storeId, $type)
+    public function runUpdate($storeId, $type = 'last_week')
     {
         $feed = $this->getFeed($storeId, $type);
 
@@ -54,7 +54,11 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Magmodules_Feedbackcompan
         }
 
         if (!isset($feed['feed']['reviews'])) {
-            return array();
+            return array(
+                'status'  => 'ERROR',
+                'update'  => 0,
+                'new'     => 0
+            );
         }
 
         foreach ($feed['feed']['reviews'] as $review) {
