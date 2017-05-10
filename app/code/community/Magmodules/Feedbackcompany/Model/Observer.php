@@ -72,7 +72,7 @@ class Magmodules_Feedbackcompany_Model_Observer
         $storeIds = Mage::getModel('feedbackcompany/api')->getStoreIds('prcron');
         foreach ($storeIds as $storeId) {
             $startTime = microtime(true);
-            $results = Mage::getModel('feedbackcompany/productreviews')->runUpdate($storeId);
+            $results = Mage::getModel('feedbackcompany/productreviews')->runUpdate($storeId, 'last_week');
             $logModel->addToLog('productreviews', $storeId, $results, '', $startTime, 'productreviews');
         }
     }
