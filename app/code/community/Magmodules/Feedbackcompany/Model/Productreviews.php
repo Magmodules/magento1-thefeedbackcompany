@@ -35,7 +35,7 @@ class Magmodules_Feedbackcompany_Model_Productreviews extends Magmodules_Feedbac
      *
      * @return array
      */
-    public function runUpdate($storeId, $type)
+    public function runUpdate($storeId, $type = 'last_week')
     {
         $feed = $this->getFeed($storeId, $type);
 

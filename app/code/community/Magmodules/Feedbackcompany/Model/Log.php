@@ -40,14 +40,21 @@ class Magmodules_Feedbackcompany_Model_Log extends Mage_Core_Model_Abstract
      * @param string $aUrl
      * @param string $oId
      */
-    public function addToLog($type, $sId, $review = '', $res = '', $t = '', $cron = '', $aUrl = '', $oId = '') 
+    public function addToLog($type, $sId, $review = '', $res = '', $t = '', $cron = '', $aUrl = '', $oId = '')
     {
         if (Mage::getStoreConfig('feedbackcompany/log/enabled')) {
+
+            $company = isset($review['company']) ? $review['company'] : '';
+            if (empty($company)) {
+                $stats = Mage::getModel('feedbackcompany/stats')->loadByStoreId($sId);
+                $company = $stats->getCompany();
+            }
+
             $data = array(
                 'type'           => $type,
                 'shop_id'        => Mage::getModel('feedbackcompany/api')->getClientId($sId),
                 'store_id'       => $sId,
-                'company'        => isset($review['company']) ? $review['company'] : '',
+                'company'        => $company,
                 'review_updates' => isset($review['update']) ? $review['update'] : '',
                 'review_new'     => isset($review['new']) ? $review['new'] : '',
                 'response'       => $res,
