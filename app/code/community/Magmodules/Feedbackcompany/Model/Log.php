@@ -45,8 +45,11 @@ class Magmodules_Feedbackcompany_Model_Log extends Mage_Core_Model_Abstract
         if (Mage::getStoreConfig('feedbackcompany/log/enabled')) {
 
             $company = isset($review['company']) ? $review['company'] : '';
+
             if (empty($company)) {
-                $stats = Mage::getModel('feedbackcompany/stats')->loadByStoreId($sId);
+                $clientId = Mage::getStoreConfig('feedbackcompany/general/client_id', $sId);
+                $stats = Mage::getModel('feedbackcompany/stats')->getCollection()
+                    ->addFieldToFilter('client_id', $clientId)->getFirstItem();
                 $company = $stats->getCompany();
             }
 
