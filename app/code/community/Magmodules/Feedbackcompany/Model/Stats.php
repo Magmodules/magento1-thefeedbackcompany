@@ -82,6 +82,7 @@ class Magmodules_Feedbackcompany_Model_Stats extends Magmodules_Feedbackcompany_
                     'feed'   => $apiResult['data'][0]
                 );
             }
+
             return array(
                 'status' => 'ERROR',
                 'error'  => isset($apiResult['error']) ? $apiResult['error'] : ''

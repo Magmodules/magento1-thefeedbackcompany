@@ -55,9 +55,10 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Magmodules_Feedbackcompan
 
         if (!isset($feed['feed']['reviews'])) {
             return array(
-                'status'  => 'ERROR',
-                'update'  => 0,
-                'new'     => 0
+                'status' => 'ERROR',
+                'update' => 0,
+                'new'    => 0,
+                'error'  => 'No Review Data'
             );
         }
 
@@ -126,6 +127,7 @@ class Magmodules_Feedbackcompany_Model_Reviews extends Magmodules_Feedbackcompan
                     'feed'   => $apiResult['data'][0]
                 );
             }
+
             return array(
                 'status' => 'ERROR',
                 'error'  => isset($apiResult['error']) ? $apiResult['error'] : ''

@@ -55,7 +55,7 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
             $msg = '';
             $reviews = Mage::getModel('feedbackcompany/reviews')->runUpdate($storeId, 'full');
             $stats = Mage::getModel('feedbackcompany/stats')->runUpdate($storeId);
-            if (($reviews['new'] > 0) || ($reviews['update'] > 0) || ($reviews['status'] == 'success')) {
+            if ($reviews['status'] == 'OK') {
                 $msg = $this->__('%s:', $reviews['company']) . ' ';
                 $msg .= $this->__('%s new review(s)', $reviews['new']) . ', ';
                 $msg .= $this->__('%s review(s) updated', $reviews['update']) . ' ';
@@ -73,6 +73,9 @@ class Magmodules_Feedbackcompany_Adminhtml_FeedbackreviewsController extends Mag
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                 } elseif (!empty($stats['msg'])) {
                     $msg = $this->__('ClientId %s: %s', $clientId, $stats['msg']);
+                    Mage::getSingleton('adminhtml/session')->addError($msg);
+                } elseif (!empty($reviews['error'])) {
+                    $msg = $this->__('ClientId %s: %s', $clientId, $reviews['error']);
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                 } else {
                     $msg = $this->__('ClientId %s: no updates found, feed is empty or not found!', $clientId);

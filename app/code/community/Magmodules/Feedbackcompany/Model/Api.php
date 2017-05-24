@@ -305,6 +305,7 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
                 } else {
                     $enabled = Mage::helper('feedbackcompany')->isEnabled($store->getId());
                 }
+
                 $clientId = Mage::getStoreConfig(self::XML_CLIENT_ID, $store->getId());
                 if ($enabled && $clientId) {
                     $storeIds[$clientId] = $store->getId();
