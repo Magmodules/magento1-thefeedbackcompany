@@ -72,7 +72,6 @@ class Magmodules_Feedbackcompany_Model_Productreviews extends Magmodules_Feedbac
                 $content = $review['review'];
                 $title = $this->getFirstSentence($content);
                 if (!empty($title)) {
-
                     $createdAt = $this->reformatDate($review['date_created']);
                     $nickName = $review['client']['name'];
                     $ratingVal = $review['rating'];
@@ -137,6 +136,7 @@ class Magmodules_Feedbackcompany_Model_Productreviews extends Magmodules_Feedbac
                     'feed'   => $apiResult['data'][0]
                 );
             }
+
             return array(
                 'status' => 'ERROR',
                 'error'  => isset($apiResult['error']) ? $apiResult['error'] : ''
