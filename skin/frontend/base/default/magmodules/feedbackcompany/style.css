@@ -22,70 +22,54 @@
     justify-content: space-between;
     align-items: baseline;
 }
-
 .feedbackcompany .page-title h1 {
     min-height: 50px;
 }
-
 .feedbackcompany .page-title .flexbox-container h1 {
     flex-grow: 1;
     border-bottom: none;
 }
-
 .feedbackcompany .flexbox-container .header-floating-feedbackcompany {
     flex-shrink: 0;
 }
-
 .feedbackcompany .header-floating-feedbackcompany .button {
     padding: 0;
     vertical-align: text-bottom;
 }
-
 .feedbackcompany .header-floating-feedbackcompany .button span {
     padding: 10px 45px 10px 41px;
     display: inline-block;
 }
-
 .feedbackcompany .total-feedbackcompany {
     display: none;
     margin-right: 14px;
     text-align: right;
 }
-
 .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile {
     display: block;
     text-align: center;
     margin: 40px 0 30px;
 }
-
 .feedbackcompany .total-feedbackcompany .total-block-stars, .feedbackcompany .total-feedbackcompany .total-block-stars-medium {
     float: right;
     vertical-align: sub;
 }
-
 .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile .button, .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile .total-block-stars {
     vertical-align: middle;
 }
-
 .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile .total-block-stars {
     float: none;
     margin-top: -8px;
     display: inline-block;
 }
-
 .feedbackcompany .total-feedbackcompany .total-description {
     text-transform: uppercase;
     font-size: 10px;
     line-height: 22px;
     clear: both;
 }
-
-.feedbackcompany .about-feedbackcompany {
-}
-
-.feedbackcompany .stats-feedbackcompany {
-}
-
+.feedbackcompany .about-feedbackcompany {}
+.feedbackcompany .stats-feedbackcompany {}
 .feedbackcompany .ratingblock-feedbackcompany {
     width: 60px;
     height: 60px;
@@ -97,7 +81,6 @@
     border: 4px solid white;
     box-shadow: 1px 1px 3px #CCCCCC;
 }
-
 .feedbackcompany .content-feedbackcompany {
     overflow: auto;
     width: 100%;
@@ -105,61 +88,55 @@
     padding-left: 3px;
     line-height: 1.7;
 }
-
 .feedbackcompany .review-list {
     margin-bottom: 25px;
     margin-top: 10px;
 }
-
 .feedbackcompany .review-list h4 {
     font-size: 12px;
     border-bottom: 1px solid #E0E0E0;
     padding: 6px 3px 10px;
 }
-
 .feedbackcompany .review-header {
     clear: both;
 }
-
 .feedbackcompany .review-content {
     padding: 0 3px;
     line-height: 2.4;
 }
-
 .feedbackcompany .review-content .experience {
     margin-bottom: 12px;
 }
-
+.feedbackcompany .title {
+    font-weight: bold;
+}
+.feedbackcompany .answer {
+    margin-bottom: 10px;
+}
 .feedbackcompany ul.overall {
     float: right;
 }
-
 .feedbackcompany dl {
     padding-left: 21px;
 }
-
 .feedbackcompany dl:after {
     content: "";
     display: table;
     clear: both;
 }
-
 .feedbackcompany dl.summary-index {
     line-height: 2.8;
 }
-
 .feedbackcompany dl dt {
     font-weight: bold;
     clear: left;
     float: left;
     width: 50%;
 }
-
 .feedbackcompany dl dd {
     float: left;
     width: 50%;
 }
-
 .feedbackcompany .sprites-icon {
     background: url('images/sprites.png') center top no-repeat;
     width: 16px;
@@ -170,24 +147,19 @@
     margin-right: -16px;
     vertical-align: middle;
 }
-
 @media (-webkit-min-device-pixel-ratio: 2), not all, not all, not all, (min-resolution: 192dpi), (min-resolution: 2dppx) {
     .feedbackcompany .sprites-icon {
         background: url('images/sprites@2x.png') center top no-repeat;
         background-size: 16px;
         -webkit-transform: translate3d(0, 0, 0);
     }
-
 }
-
 .feedbackcompany .sprites-icon.sprites-icon-comment {
     background-position: 0 0;
 }
-
 .feedbackcompany .sprites-icon.sprites-icon-tick {
     background-position: 0 -15px;
 }
-
 .feedbackcompany .sprites-icon.sprites-icon-brush {
     background-position: 0 -30px;
 }
@@ -207,7 +179,6 @@
     border-radius: 10px;
     font-style: italic;
 }
-
 .company_response:before {
     content: "";
     position: absolute;
@@ -219,7 +190,6 @@
     display: block;
     width: 0;
 }
-
 .company_response:after {
     content: "";
     position: absolute;
@@ -231,7 +201,6 @@
     display: block;
     width: 0;
 }
-
 .company_response.top:before {
     top: -16px;
     bottom: auto;
@@ -239,7 +208,6 @@
     right: auto;
     border-width: 0 16px 16px;
 }
-
 .company_response.top:after {
     top: -13px;
     bottom: auto;
@@ -247,90 +215,70 @@
     right: auto;
     border-width: 0 13px 13px;
 }
-
 @media only screen and (min-width: 600px) {
     .feedbackcompany .total-feedbackcompany.total-feedbackcompany-mobile {
         display: none;
     }
-
     .feedbackcompany .total-feedbackcompany {
         display: inline-block;
     }
-
     .feedbackcompany .header-floating-feedbackcompany .button {
         vertical-align: text-bottom;
     }
 }
-
 @media only screen and (min-width: 771px) {
     .feedbackcompany .total-feedbackcompany {
         line-height: 34px;
     }
-
     .feedbackcompany .review-content .experience {
         margin-bottom: 5px;
         line-height: 2;
     }
-
     .feedbackcompany .header-floating-feedbackcompany {
         padding: 1px 15px;
     }
-
     .feedbackcompany .review-list h4 {
         padding: 6px 30px 10px;
     }
-
     .feedbackcompany .page-title h1 {
         padding: 0 15px 20px;
     }
-
     .feedbackcompany dl {
         padding-left: 0;
     }
-
     .feedbackcompany dl.dl-feedback {
-        margin-bottom: 6px;
+        margin-bottom: 10px;
     }
-
     .feedbackcompany dl.dl-feedback dt {
         width: 25%;
     }
-
     .feedbackcompany dl.dl-feedback .upper {
         line-height: 2.0;
         padding-top: 8px;
     }
-
     .feedbackcompany dl.dl-feedback dd {
         width: 75%;
     }
-
     .feedbackcompany dl.summary-index dt {
         width: 50%;
     }
-
     .feedbackcompany dl.summary-index dd {
         width: 50%;
     }
-
     .feedbackcompany .summary-index .column {
         float: left;
         width: 50%;
     }
-
     .feedbackcompany .content-feedbackcompany {
         padding-left: 15px;
         line-height: 1.93;
         margin-bottom: 23px;
     }
-
     .feedbackcompany .review-content {
         padding: 0 30px;
         line-height: 2.8;
     }
-
     .feedbackcompany .sprites-icon {
         left: -24px;
     }
-
 }
