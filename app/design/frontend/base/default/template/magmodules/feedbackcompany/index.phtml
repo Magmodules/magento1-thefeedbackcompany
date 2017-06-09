@@ -104,15 +104,15 @@ $helper = Mage::helper('feedbackcompany');
                         <?php } ?>
                     </div>
 
-                    <!-- NEW -->
                     <div class="column">
                         <?php $questions = $helper->getQuestions($review->getQuestions(), true, 'open'); ?>
                         <?php foreach ($questions as $question) { ?>
-                            <dt class="title"><?php echo $question['Reviewtitle'] ?></dt>
-                            <dd class="answer"><?php echo $question['answer'] ?></dd>
+                            <?php if(!empty($question['answer'])) { ?>
+                                <dt class="title"><?php echo $question['Reviewtitle'] ?></dt>
+                                <dd class="answer"><?php echo $question['answer'] ?></dd>
+                            <?php } ?>
                         <?php } ?>
                     </div>
-                    <!-- END NEW -->
 
                     <dl class="dl-feedback">
                         <?php if ($buyOnline = $review->getBuyOnline()) { ?>
