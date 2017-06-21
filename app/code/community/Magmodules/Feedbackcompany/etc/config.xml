@@ -20,7 +20,7 @@
 <config>
     <modules>
         <Magmodules_Feedbackcompany>
-            <version>1.5.5</version>
+            <version>1.5.6</version>
         </Magmodules_Feedbackcompany>
     </modules>
     <global>
