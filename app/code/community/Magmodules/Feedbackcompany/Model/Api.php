@@ -21,6 +21,7 @@
 class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
 {
 
+    const CURL_TIMEOUT = 15;
     const XML_CLIENT_ID = 'feedbackcompany/general/client_id';
     const XML_CLIENT_SECRET = 'feedbackcompany/general/client_secret';
     const FBC_OAUTH2_TOKEN_URL = 'https://beoordelingen.feedbackcompany.nl/api/v1/oauth2/token';
@@ -56,7 +57,7 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
         curl_setopt($request, CURLOPT_URL, $url);
         curl_setopt($request, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $clientToken));
         curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($request, CURLOPT_TIMEOUT, 30);
+        curl_setopt($request, CURLOPT_TIMEOUT, self::CURL_TIMEOUT);
         $apiResult = json_decode($content = curl_exec($request), true);
 
         return $apiResult;
@@ -86,7 +87,7 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
             curl_setopt($feedbackconnect, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($feedbackconnect, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($feedbackconnect, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($feedbackconnect, CURLOPT_TIMEOUT, 30);
+            curl_setopt($feedbackconnect, CURLOPT_TIMEOUT, self::CURL_TIMEOUT);
             $response = json_decode(curl_exec($feedbackconnect));
             curl_close($feedbackconnect);
 
@@ -259,7 +260,7 @@ class Magmodules_Feedbackcompany_Model_Api extends Mage_Core_Model_Abstract
                 curl_setopt($feedbackconnect, CURLOPT_FOLLOWLOCATION, 1);
                 curl_setopt($feedbackconnect, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($feedbackconnect, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($feedbackconnect, CURLOPT_TIMEOUT, 60);
+                curl_setopt($feedbackconnect, CURLOPT_TIMEOUT, self::CURL_TIMEOUT);
                 $response = curl_exec($feedbackconnect);
                 curl_close($feedbackconnect);
 
