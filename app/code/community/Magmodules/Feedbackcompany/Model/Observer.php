@@ -102,25 +102,40 @@ class Magmodules_Feedbackcompany_Model_Observer
      */
     public function processFeedbackInvitationcallAfterShipment($observer)
     {
-        $shipment = $observer->getEvent()->getShipment();
-        $order = $shipment->getOrder();
-        $invitationEnabled = Mage::getStoreConfig('feedbackcompany/invitation/enabled', $order->getStoreId());
-        $connector = Mage::getStoreConfig('feedbackcompany/invitation/connector', $order->getStoreId());
-        if ($invitationEnabled && $connector) {
-            $status = Mage::getStoreConfig('feedbackcompany/invitation/status', $order->getStoreId());
-            if ($order->getStatus() == $status) {
-                if (!$order->getFeedbackSent()) {
-                    $backlog = Mage::getStoreConfig('feedbackcompany/invitation/backlog', $order->getStoreId());
-                    if ($backlog > 0) {
-                        $dateDiff = floor(time() - strtotime($order->getCreatedAt())) / (60 * 60 * 24);
-                        if ($dateDiff < $backlog) {
-                            Mage::getModel('feedbackcompany/api')->sendInvitation($order);
-                        }
-                    } else {
-                        Mage::getModel('feedbackcompany/api')->sendInvitation($order);
-                    }
-                }
+        try {
+            /** @var Mage_Sales_Model_Order_Shipment $shipment */
+            $shipment = $observer->getEvent()->getShipment();
+
+            /** @var Mage_Sales_Model_Order $order */
+            $order = $shipment->getOrder();
+            $storeId = $order->getStoreId();
+
+            $invitationEnabled = Mage::getStoreConfig('feedbackcompany/invitation/enabled', $storeId);
+            $connector = Mage::getStoreConfig('feedbackcompany/invitation/connector', $storeId);
+            if (!$invitationEnabled || empty($connector)) {
+                return;
             }
+
+            $status = Mage::getStoreConfig('feedbackcompany/invitation/status', $storeId);
+            if ($order->getStatus() != $status) {
+                return;
+            }
+
+            if ($order->getFeedbackSent()) {
+                return;
+            }
+
+            $backlog = Mage::getStoreConfig('feedbackcompany/invitation/backlog', $storeId);
+            if ($backlog > 0) {
+                $dateDiff = floor(time() - strtotime($order->getCreatedAt())) / (60 * 60 * 24);
+                if ($dateDiff < $backlog) {
+                    Mage::getModel('feedbackcompany/api')->sendInvitation($order);
+                }
+            } else {
+                Mage::getModel('feedbackcompany/api')->sendInvitation($order);
+            }
+        } catch (Exception $e) {
+            Mage::log('processFeedbackInvitationcallAfterShipment:' . $e->getMessage());
         }
     }
 
@@ -131,24 +146,37 @@ class Magmodules_Feedbackcompany_Model_Observer
      */
     public function processFeedbackInvitationcall($observer)
     {
-        $order = $observer->getEvent()->getOrder();
-        $invitationEnabled = Mage::getStoreConfig('feedbackcompany/invitation/enabled', $order->getStoreId());
-        $connector = Mage::getStoreConfig('feedbackcompany/invitation/connector', $order->getStoreId());
-        if ($invitationEnabled && $connector) {
-            $status = Mage::getStoreConfig('feedbackcompany/invitation/status', $order->getStoreId());
-            if ($order->getStatus() == $status) {
-                if (!$order->getFeedbackSent()) {
-                    $backlog = Mage::getStoreConfig('feedbackcompany/invitation/backlog', $order->getStoreId());
-                    if ($backlog > 0) {
-                        $dateDiff = floor(time() - strtotime($order->getCreatedAt())) / (60 * 60 * 24);
-                        if ($dateDiff < $backlog) {
-                            Mage::getModel('feedbackcompany/api')->sendInvitation($order);
-                        }
-                    } else {
-                        Mage::getModel('feedbackcompany/api')->sendInvitation($order);
-                    }
-                }
+        try {
+            /** @var Mage_Sales_Model_Order $order */
+            $order = $observer->getEvent()->getOrder();
+            $storeId = $order->getStoreId();
+
+            $invitationEnabled = Mage::getStoreConfig('feedbackcompany/invitation/enabled', $storeId);
+            $connector = Mage::getStoreConfig('feedbackcompany/invitation/connector', $storeId);
+            if (!$invitationEnabled || empty($connector)) {
+                return;
             }
+
+            $status = Mage::getStoreConfig('feedbackcompany/invitation/status', $storeId);
+            if ($order->getStatus() != $status) {
+                return;
+            }
+
+            if ($order->getFeedbackSent()) {
+                return;
+            }
+
+            $backlog = Mage::getStoreConfig('feedbackcompany/invitation/backlog', $storeId);
+            if ($backlog > 0) {
+                $dateDiff = floor(time() - strtotime($order->getCreatedAt())) / (60 * 60 * 24);
+                if ($dateDiff < $backlog) {
+                    Mage::getModel('feedbackcompany/api')->sendInvitation($order);
+                }
+            } else {
+                Mage::getModel('feedbackcompany/api')->sendInvitation($order);
+            }
+        } catch (Exception $e) {
+            Mage::log('processFeedbackInvitationcall:' . $e->getMessage());
         }
     }
 
