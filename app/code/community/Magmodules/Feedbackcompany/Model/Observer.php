@@ -121,7 +121,7 @@ class Magmodules_Feedbackcompany_Model_Observer
                 return;
             }
 
-            if (!$order->getFeedbackSent()) {
+            if ($order->getFeedbackSent()) {
                 return;
             }
 
@@ -162,7 +162,7 @@ class Magmodules_Feedbackcompany_Model_Observer
                 return;
             }
 
-            if (!$order->getFeedbackSent()) {
+            if ($order->getFeedbackSent()) {
                 return;
             }
 
