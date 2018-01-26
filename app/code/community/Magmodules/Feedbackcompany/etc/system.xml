@@ -34,13 +34,13 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <info>
+                <!--<info>
                     <frontend_model>feedbackcompany/adminhtml_widget_info_info</frontend_model>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                </info>
+                </info>-->
                 <general translate="label" module="feedbackcompany">
                     <label>General configuration</label>
                     <frontend_type>text</frontend_type>
